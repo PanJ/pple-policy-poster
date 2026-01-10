@@ -157,9 +157,9 @@
     }
 
     .policy-item.active {
-      background: #667eea;
+      background: #002A47;
       color: white;
-      border-color: #667eea;
+      border-color: #002A47;
     }
 
     .policy-item-code {
@@ -291,6 +291,72 @@
       flex-direction: column;
       gap: 10px;
       max-width: 300px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .image-upload-control.hidden {
+      transform: translateX(calc(100% + 20px));
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .image-toggle-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: all 0.2s;
+    }
+
+    .image-toggle-btn:hover {
+      background: #f7fafc;
+      transform: scale(1.05);
+    }
+
+    .image-toggle-btn svg {
+      width: 24px;
+      height: 24px;
+      color: #4a5568;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .panel-close-btn {
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+      color: #718096;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .panel-close-btn:hover {
+      background: #edf2f7;
+      color: #2d3748;
+    }
+
+    .panel-close-btn svg {
+      width: 18px;
+      height: 18px;
     }
 
     .image-upload-control label {
@@ -450,6 +516,7 @@
       text-shadow: 0 8px 16px rgba(0, 0, 0, 1);
       margin-bottom: 24px;
       padding-right: -24px;
+      line-height: 1.33;
       /* white-space: nowrap; */
     }
 
@@ -506,16 +573,11 @@
     }
 
     .text-qr-title {
-      font-size: 32px;
+      font-size: 40px;
       font-weight: 500;
       color: white;
-    }
-
-    .text-qr-subtitle {
-      font-family: 'Anakotmai', sans-serif;
-      font-size: 32px;
-      font-weight: 500;
-      color: white;
+      line-height: 1.40;
+      margin-bottom: 4px;
     }
 
     .text-qr-url {
@@ -603,7 +665,7 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #CC500F;
       color: white;
     }
 
@@ -760,11 +822,10 @@
             <div class="qr-group">
               <div class="qr-code" id="qrCode"></div>
             <div class="qr-text-group">
-              <div class="text-qr-title" contenteditable="true" data-default="ทำทำไม? ทำอะไร? ทำอย่างไร?">
-                ทำทำไม? ทำอะไร? ทำอย่างไร?
+              <div class="text-qr-title" contenteditable="true" data-default="ทำทำไม? ทำอะไร? ทำอย่างไร?\nอ่านรายละเอียดนโยบายนี้ต่อที่นี่">
+                ทำทำไม? ทำอะไร? ทำอย่างไร?<br/>
+                อ่านรายละเอียดนโยบายนี้ต่อที่นี่
               </div>
-              <div class="text-qr-subtitle" contenteditable="true" data-default="อ่านรายละเอียดนโยบายนี้ต่อที่นี่">
-                อ่านรายละเอียดนโยบายนี้ต่อที่นี่</div>
               <div class="text-qr-url" contenteditable="true" id="qrUrlText"
                 data-default="https://election69.peoplesparty.or.th/policy/3/A-1-4"
                 oninput="updateQRCode()">
@@ -776,9 +837,23 @@
       </div>
     </div>
 
+    <!-- Image Toggle Button -->
+    <button class="image-toggle-btn" onclick="toggleImagePanel()" title="Toggle image controls">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+      </svg>
+    </button>
+
     <!-- Image Upload Control -->
-    <div class="image-upload-control">
-      <label>Background Image Overlay</label>
+    <div class="image-upload-control hidden" id="imageUploadControl">
+      <div class="panel-header">
+        <label>Background Image Overlay</label>
+        <button class="panel-close-btn" onclick="toggleImagePanel()" title="Close panel">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
       <input type="text" id="imageUrlInput" placeholder="Enter image URL" />
       <button class="btn-secondary" onclick="loadImageFromUrl()">Load URL</button>
       <label>Or upload file:</label>
@@ -1231,6 +1306,12 @@
       document.getElementById('imageUrlInput').value = '';
       document.getElementById('imageFileInput').value = '';
       currentImageUrl = '';
+    }
+
+    // Toggle image panel visibility
+    function toggleImagePanel() {
+      const panel = document.getElementById('imageUploadControl');
+      panel.classList.toggle('hidden');
     }
 
     // Reset to original
