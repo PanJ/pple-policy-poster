@@ -4,11 +4,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PPLE Policy Poster Editor - ContentEditable</title>
+  <title>PPLE Policy Poster Editor</title>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Anakotmai:wght@300;400;500;700;900&display=swap');
+    @font-face {
+      font-family: 'Anakotmai';
+      src: url('fonts/anakotmai/anakotmai-light.woff2') format('woff2'),
+           url('fonts/anakotmai/anakotmai-light.woff') format('woff');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Anakotmai';
+      src: url('fonts/anakotmai/anakotmai-medium.woff2') format('woff2'),
+           url('fonts/anakotmai/anakotmai-medium.woff') format('woff');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Anakotmai';
+      src: url('fonts/anakotmai/anakotmai-bold.woff2') format('woff2'),
+           url('fonts/anakotmai/anakotmai-bold.woff') format('woff');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Anakotmai';
+      src: url('fonts/anakotmai/anakotmai-bold.woff2') format('woff2'),
+           url('fonts/anakotmai/anakotmai-bold.woff') format('woff');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
 
     * {
       margin: 0;
@@ -545,7 +579,7 @@
       position: absolute;
       left: 150px;
       bottom: 16px;
-      font-family: 'Google Sans', sans-serif;
+      font-family: sans-serif;
       font-size: 16px;
       font-weight: 500;
       color: rgba(255, 255, 255, 0.4);
