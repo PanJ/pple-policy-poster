@@ -71,6 +71,7 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       display: flex;
       align-items: center;
+      border-bottom: 1px solid #e2e8f0;
       justify-content: space-between;
       gap: 20px;
     }
@@ -727,14 +728,9 @@
   <div class="container">
     <!-- Toolbar -->
     <div class="toolbar">
-      <h1>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-            fill="currentColor" />
-        </svg>
-        Poster Editor
-      </h1>
+      <div>
+        <b>Policy Poster Editor</b> - กดแก้ text บนรูปได้เลย • กด <kbd>j</kbd>/<kbd>k</kbd> เพื่อดูโปสเตอร์ต่อไป/ก่อนหน้า • กด <kbd>Ctrl</kbd>+<kbd>S</kbd> เพื่อบันทึกเป็น PNG
+      </div>
       <div class="toolbar-buttons">
         <button class="btn-secondary" onclick="resetToOriginal()">
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -755,9 +751,9 @@
     </div>
 
     <!-- Info Banner -->
-    <div class="info-banner">
+    <!-- <div class="info-banner">
       💡 Click on any text to edit it directly. Your changes are instantly visible!
-    </div>
+    </div> -->
 
     <!-- Main Content with Sidebar -->
     <div class="main-content">
@@ -766,9 +762,9 @@
         <div class="sidebar-header">
           📋 Policies (203)
         </div>
-        <div style="padding: 8px 15px; background: #edf2f7; font-size: 12px; color: #4a5568; border-bottom: 1px solid #e2e8f0;">
+        <!-- <div style="padding: 8px 15px; background: #edf2f7; font-size: 12px; color: #4a5568; border-bottom: 1px solid #e2e8f0;">
           ⌨️ Use <kbd>j</kbd>/<kbd>k</kbd> to navigate • <kbd>Ctrl+S</kbd> to export
-        </div>
+        </div> -->
         <div class="policy-list" id="policyList">
           <div style="padding: 20px; text-align: center; color: #a0aec0;">
             Loading policies...
@@ -976,11 +972,11 @@
         return;
       }
       
-      // Arrow keys for navigation
-      if (e.key === 'ArrowDown' || e.key === 'k') {
+      // Arrow keys for navigation (including Thai keyboard ่/า)
+      if (e.key === 'ArrowDown' || e.key === 'k' || e.key === 'า') {
         e.preventDefault();
         navigateToPolicy(1); // Next
-      } else if (e.key === 'ArrowUp' || e.key === 'j') {
+      } else if (e.key === 'ArrowUp' || e.key === 'j' || e.key === '่') {
         e.preventDefault();
         navigateToPolicy(-1); // Previous
       }
@@ -1078,7 +1074,7 @@
           
           // Split by '/' and get only the third item (index 2)
           const categories = fullPath.split('/').map(c => c.trim()).filter(c => c.length > 0);
-          policyDirectory = categories[2] || categories[categories.length - 1] || '';
+          policyDirectory = categories[1] || categories[categories.length - 1] || '';
           
           console.log('Found category div (third level):', policyDirectory);
         }
@@ -1152,23 +1148,26 @@
           console.warn('No title found');
         }
         
-        if (subtitle) {
+        if (subtitle && !subtitle.includes('อ่านรายละเอียดนโยบายพรรคประชาชน')) {
           subtitleEl.innerHTML = subtitle.replace(/\n/g, '<br>');
+          subtitleEl.style.display = 'block';
           console.log('Subtitle updated:', subtitle);
         } else {
-          console.warn('No subtitle found');
+          subtitleEl.style.display = 'none';
+          console.warn('No subtitle found or default text detected');
         }
         
         // Update policy number using running number
         const policyNumberEl = document.querySelector('.text-policy-number');
         const runningNum = window.currentRunningNumber || '1';
+        const totalPolicies = policyUrls.length || 203;
         
         // Combine policy number and directory on same line
         if (policyDirectory) {
           // Create temporary span to measure text width
           const tempSpan = document.createElement('span');
           tempSpan.style.cssText = 'font-family: Anakotmai, sans-serif; font-size: 40px; font-weight: 300; position: absolute; visibility: hidden; white-space: nowrap;';
-          tempSpan.textContent = `นโยบายพรรคประชาชน ${runningNum}/200 : ${policyDirectory}`;
+          tempSpan.textContent = `นโยบายพรรคประชาชน ${runningNum}/${totalPolicies} : ${policyDirectory}`;
           document.body.appendChild(tempSpan);
           
           const textWidth = tempSpan.offsetWidth;
@@ -1177,12 +1176,12 @@
           
           // If text is too long, break before directory
           if (textWidth > containerWidth) {
-            policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/200 :<br>${policyDirectory}`;
+            policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/${totalPolicies} :<br>${policyDirectory}`;
           } else {
-            policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/200 : ${policyDirectory}`;
+            policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/${totalPolicies} : ${policyDirectory}`;
           }
         } else {
-          policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/200`;
+          policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/${totalPolicies}`;
         }
         
         // Update URL in QR code section
