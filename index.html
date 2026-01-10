@@ -967,7 +967,14 @@
     
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
-      // Ignore if typing in input field
+      // Export shortcuts work everywhere
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'e' || e.key === 's')) {
+        e.preventDefault();
+        exportAsPNG();
+        return;
+      }
+      
+      // Ignore navigation shortcuts if typing in input field or contenteditable
       if (e.target.tagName === 'INPUT' || e.target.isContentEditable) {
         return;
       }
@@ -979,18 +986,6 @@
       } else if (e.key === 'ArrowUp' || e.key === 'j' || e.key === '่') {
         e.preventDefault();
         navigateToPolicy(-1); // Previous
-      }
-      
-      // Export with Ctrl+E or Cmd+E
-      if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
-        e.preventDefault();
-        exportAsPNG();
-      }
-      
-      // Also support Ctrl+S / Cmd+S for export
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        exportAsPNG();
       }
     });
     
