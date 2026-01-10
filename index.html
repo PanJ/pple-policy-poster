@@ -55,6 +55,17 @@
       gap: 10px;
     }
 
+    kbd {
+      background: white;
+      border: 1px solid #cbd5e0;
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
     .info-banner {
       background: #edf2f7;
       padding: 12px 30px;
@@ -63,28 +74,129 @@
       border-bottom: 1px solid #e2e8f0;
     }
 
+    .main-content {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: #f7fafc;
+      border-right: 1px solid #e2e8f0;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .sidebar-header {
+      padding: 15px;
+      background: white;
+      border-bottom: 2px solid #e2e8f0;
+      font-weight: 600;
+      color: #2d3748;
+      font-size: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .policy-list {
+      padding: 10px;
+    }
+
+    .policy-item {
+      padding: 10px 12px;
+      margin-bottom: 5px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 13px;
+      color: #4a5568;
+    }
+
+    .policy-item:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+      transform: translateX(3px);
+    }
+
+    .policy-item.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    .policy-item-code {
+      font-weight: 600;
+      font-family: 'Courier New', monospace;
+    }
+
+    .policy-item-number {
+      display: inline-block;
+      min-width: 35px;
+      color: #a0aec0;
+      font-size: 12px;
+      margin-right: 8px;
+    }
+
+    .sidebar-url-input {
+      padding: 15px;
+      background: white;
+      border-top: 2px solid #e2e8f0;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+    }
+
+    .sidebar-url-input input {
+      width: 100%;
+      padding: 8px 10px;
+      border: 2px solid #cbd5e0;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-url-input input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .sidebar-url-input button {
+      width: 100%;
+      padding: 8px;
+      font-size: 12px;
+      justify-content: center;
+    }
+
     .preview-container {
       flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: auto;
+      overflow: hidden;
+      padding: 20px;
+      background: #f7fafc;
     }
 
     .preview-wrapper {
-      padding: 20px;
-      /* transform: scale(0.4); */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
     }
 
     #poster {
       width: 1200px;
       height: 1600px;
-      max-width: 100%;
       position: relative;
       background-color: #002A47;
       overflow: hidden;
-      transform-origin: top center;
+      transform-origin: center center;
       background: url('template/template_bg_only.svg');
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
     .background-layer {
@@ -303,6 +415,8 @@
       color: white;
       text-shadow: 0 8px 16px rgba(0, 0, 0, 1);
       margin-bottom: 24px;
+      padding-right: -24px;
+      /* white-space: nowrap; */
     }
 
     .text-main-title {
@@ -539,33 +653,44 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
           </svg>
-          Export PNG
+          Export PNG (Ctrl+S)
         </button>
       </div>
     </div>
 
-    <!-- Policy URL Input -->
-    <div class="info-banner" style="background: #e6fffa; border-bottom: 2px solid #81e6d9; padding: 20px 30px;">
-      <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-        <label style="font-weight: 600; color: #234e52; white-space: nowrap;">📋 Auto-fill from Policy URL:</label>
-        <input type="text" id="policyUrlInput" placeholder="https://election69.peoplesparty.or.th/policy/4/D-1-1-01" 
-          style="flex: 1; min-width: 300px; padding: 10px 15px; border: 2px solid #81e6d9; border-radius: 8px; font-size: 14px;" />
-        <button class="btn-primary" onclick="fetchPolicyData()" style="white-space: nowrap;">
-          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-          </svg>
-          Fetch & Populate
-        </button>
-      </div>
-    </div>
-    
     <!-- Info Banner -->
     <div class="info-banner">
       💡 Click on any text to edit it directly. Your changes are instantly visible!
     </div>
 
-    <!-- Poster Preview -->
-    <div class="preview-container">
+    <!-- Main Content with Sidebar -->
+    <div class="main-content">
+      <!-- Sidebar with Policy List -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          📋 Policies (203)
+        </div>
+        <div style="padding: 8px 15px; background: #edf2f7; font-size: 12px; color: #4a5568; border-bottom: 1px solid #e2e8f0;">
+          ⌨️ Use <kbd>j</kbd>/<kbd>k</kbd> to navigate • <kbd>Ctrl+S</kbd> to export
+        </div>
+        <div class="policy-list" id="policyList">
+          <div style="padding: 20px; text-align: center; color: #a0aec0;">
+            Loading policies...
+          </div>
+        </div>
+        <div class="sidebar-url-input">
+          <input type="text" id="policyUrlInput" placeholder="Paste policy URL..." />
+          <button class="btn-primary" onclick="fetchPolicyData()">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+            </svg>
+            Fetch from URL
+          </button>
+        </div>
+      </div>
+
+      <!-- Poster Preview -->
+      <div class="preview-container">
       <div class="preview-wrapper">
         <div id="poster">
 
@@ -585,8 +710,8 @@
           <!-- Editable Text Elements -->
           <div class="content">
             <div class="policy-title">
-              <div class="text-policy-number" contenteditable="true" data-default="นโยบายพรรคประชาชน 1/200">
-                นโยบายพรรคประชาชน 1/200
+              <div class="text-policy-number" contenteditable="true" data-default="นโยบายพรรคประชาชน 1/200: นโยบาย">
+                นโยบายพรรคประชาชน 1/200: นโยบาย
               </div>
               <div class="text-main-title" contenteditable="true"
                 data-default="สู่สินค้าทะลัก-<br>ตัดราคา-ไม่เป็นธรรม:<br>ปกป้องอุตสาหกรรม<br>และ SMEs ไทย">
@@ -632,9 +757,140 @@
     // Store original content for reset
     const originalContent = {};
     let currentImageUrl = '';
+    let policyUrls = [];
+    let currentPolicyUrl = null;
+    let currentPolicyIndex = 0;
+
+    // Scale poster to fit viewport
+    function scalePosterToFit() {
+      const poster = document.getElementById('poster');
+      const container = document.querySelector('.preview-container');
+      
+      if (!poster || !container) return;
+      
+      const containerRect = container.getBoundingClientRect();
+      const availableWidth = containerRect.width - 40; // Account for padding
+      const availableHeight = containerRect.height - 40;
+      
+      const posterWidth = 1200;
+      const posterHeight = 1600;
+      
+      // Calculate scale factors for both dimensions
+      const scaleX = availableWidth / posterWidth;
+      const scaleY = availableHeight / posterHeight;
+      
+      // Use the smaller scale to ensure the poster fits completely
+      const scale = Math.min(scaleX, scaleY, 1); // Cap at 1 to avoid upscaling
+      
+      poster.style.transform = `scale(${scale})`;
+    }
+
+    // Load policy URLs from JSON file
+    async function loadPolicyList() {
+      try {
+        const response = await fetch('policy-urls.json');
+        policyUrls = await response.json();
+        
+        const policyListEl = document.getElementById('policyList');
+        policyListEl.innerHTML = '';
+        
+        policyUrls.forEach((url, index) => {
+          const policyCode = url.split('/').pop();
+          const runningNumber = index + 1;
+          const item = document.createElement('div');
+          item.className = 'policy-item';
+          item.dataset.runningNumber = runningNumber;
+          item.innerHTML = `<span class="policy-item-number">#${runningNumber}</span><span class="policy-item-code">${policyCode}</span>`;
+          item.onclick = () => loadPolicyFromSidebar(url, item, runningNumber);
+          policyListEl.appendChild(item);
+        });
+        
+        console.log(`Loaded ${policyUrls.length} policies`);
+        
+        // Automatically load the first policy
+        if (policyUrls.length > 0) {
+          const firstItem = policyListEl.querySelector('.policy-item');
+          loadPolicyFromSidebar(policyUrls[0], firstItem, 1);
+        }
+      } catch (error) {
+        console.error('Error loading policy list:', error);
+        document.getElementById('policyList').innerHTML = 
+          '<div style="padding: 20px; text-align: center; color: #e53e3e;">❌ Failed to load policies</div>';
+      }
+    }
+
+    // Load policy from sidebar click
+    function loadPolicyFromSidebar(url, itemEl, runningNumber) {
+      // Update active state
+      document.querySelectorAll('.policy-item').forEach(el => el.classList.remove('active'));
+      itemEl.classList.add('active');
+      
+      // Update current index
+      currentPolicyIndex = parseInt(itemEl.dataset.runningNumber) - 1;
+      
+      // Store running number for use in policy number field
+      window.currentRunningNumber = runningNumber;
+      
+      // Update URL input and fetch
+      document.getElementById('policyUrlInput').value = url;
+      currentPolicyUrl = url;
+      fetchPolicyData();
+    }
+    
+    // Navigate to next policy
+    function navigateToPolicy(direction) {
+      const policyItems = document.querySelectorAll('.policy-item');
+      if (policyItems.length === 0) return;
+      
+      // Calculate new index
+      let newIndex = currentPolicyIndex + direction;
+      
+      // Wrap around
+      if (newIndex < 0) newIndex = policyItems.length - 1;
+      if (newIndex >= policyItems.length) newIndex = 0;
+      
+      // Load the policy
+      const item = policyItems[newIndex];
+      const url = policyUrls[newIndex];
+      const runningNumber = newIndex + 1;
+      
+      loadPolicyFromSidebar(url, item, runningNumber);
+      
+      // Scroll into view
+      item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Ignore if typing in input field
+      if (e.target.tagName === 'INPUT' || e.target.isContentEditable) {
+        return;
+      }
+      
+      // Arrow keys for navigation
+      if (e.key === 'ArrowDown' || e.key === 'k') {
+        e.preventDefault();
+        navigateToPolicy(1); // Next
+      } else if (e.key === 'ArrowUp' || e.key === 'j') {
+        e.preventDefault();
+        navigateToPolicy(-1); // Previous
+      }
+      
+      // Export with Ctrl+E or Cmd+E
+      if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+        e.preventDefault();
+        exportAsPNG();
+      }
+      
+      // Also support Ctrl+S / Cmd+S for export
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        exportAsPNG();
+      }
+    });
     
     // Fetch and populate policy data from URL
-    async function fetchPolicyData() {
+    async function fetchPolicyData(event) {
       const urlInput = document.getElementById('policyUrlInput');
       const url = urlInput.value.trim();
       
@@ -651,7 +907,7 @@
       
       try {
         // Show loading state
-        const btn = event.target;
+        let btn = event ? event.target : document.querySelector('.sidebar-url-input button');
         const originalBtnContent = btn.innerHTML;
         btn.disabled = true;
         btn.innerHTML = '<span class="loading"></span> Fetching...';
@@ -699,6 +955,70 @@
                     doc.querySelector('meta[name="description"]')?.getAttribute('content');
         }
         
+        // Extract policy directory/breadcrumb (category path)
+        let policyDirectory = '';
+        
+        // Look for the specific div with category information
+        const categoryDiv = doc.querySelector('.flex.flex-row.items-center.gap-3.w-fit.whitespace-nowrap.text-lg') ||
+                           doc.querySelector('div[class*="flex"][class*="flex-row"][class*="items-center"]');
+        
+        if (categoryDiv) {
+          let fullPath = categoryDiv.textContent?.trim() || '';
+          // Remove "นโยบายพรรค" prefix if present
+          fullPath = fullPath.replace(/^นโยบายพรรค\s*/g, '').trim();
+          
+          // Split by '/' and get only the third item (index 2)
+          const categories = fullPath.split('/').map(c => c.trim()).filter(c => c.length > 0);
+          policyDirectory = categories[2] || categories[categories.length - 1] || '';
+          
+          console.log('Found category div (third level):', policyDirectory);
+        }
+        
+        // Fallback: Try breadcrumb navigation
+        if (!policyDirectory) {
+          const breadcrumbSelectors = [
+            'nav[aria-label="breadcrumb"]',
+            '.breadcrumb',
+            '[class*="breadcrumb"]',
+            'nav ol',
+            'nav ul'
+          ];
+          
+          for (const selector of breadcrumbSelectors) {
+            const breadcrumb = doc.querySelector(selector);
+            if (breadcrumb) {
+              const items = breadcrumb.querySelectorAll('li, a, span, div');
+              const breadcrumbTexts = [];
+              items.forEach(item => {
+                const text = item.textContent?.trim();
+                if (text && text !== '/' && text !== '>' && text !== 'หน้าหลัก' && 
+                    text !== 'Home' && !text.match(/^\s*$/) && text.length > 1) {
+                  breadcrumbTexts.push(text);
+                }
+              });
+              // Get only the third item (index 2)
+              const uniqueTexts = [...new Set(breadcrumbTexts)].filter(t => t.length > 1);
+              policyDirectory = uniqueTexts[2] || uniqueTexts[uniqueTexts.length - 1] || '';
+              if (policyDirectory && policyDirectory.length > 0) {
+                console.log('Found via breadcrumb (third level):', policyDirectory);
+                break;
+              }
+            }
+          }
+        }
+        
+        // Log for debugging if still not found
+        if (!policyDirectory) {
+          console.log('No directory found. Searching for flex divs...');
+          const flexDivs = doc.querySelectorAll('div[class*="flex"]');
+          console.log('Found flex divs:', flexDivs.length);
+          flexDivs.forEach((div, i) => {
+            if (i < 5) console.log(`Flex div ${i}:`, div.className, div.textContent?.substring(0, 100));
+          });
+        }
+        
+        console.log('Final extracted directory:', policyDirectory);
+        
         const featuredImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || 
                              doc.querySelector('meta[name="twitter:image"]')?.getAttribute('content') ||
                              doc.querySelector('.featured-image img')?.src ||
@@ -730,10 +1050,30 @@
           console.warn('No subtitle found');
         }
         
-        // Update policy number
+        // Update policy number using running number
         const policyNumberEl = document.querySelector('.text-policy-number');
-        if (policyId) {
-          policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${policyCategory}/${policyId}`;
+        const runningNum = window.currentRunningNumber || '1';
+        
+        // Combine policy number and directory on same line
+        if (policyDirectory) {
+          // Create temporary span to measure text width
+          const tempSpan = document.createElement('span');
+          tempSpan.style.cssText = 'font-family: Anakotmai, sans-serif; font-size: 40px; font-weight: 300; position: absolute; visibility: hidden; white-space: nowrap;';
+          tempSpan.textContent = `นโยบายพรรคประชาชน ${runningNum}/200 : ${policyDirectory}`;
+          document.body.appendChild(tempSpan);
+          
+          const textWidth = tempSpan.offsetWidth;
+          const containerWidth = 960; // Available width (1200 - 240 padding)
+          document.body.removeChild(tempSpan);
+          
+          // If text is too long, break before directory
+          if (textWidth > containerWidth) {
+            policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/200 :<br>${policyDirectory}`;
+          } else {
+            policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/200 : ${policyDirectory}`;
+          }
+        } else {
+          policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/200`;
         }
         
         // Update URL in QR code section
@@ -752,14 +1092,15 @@
         btn.disabled = false;
         btn.innerHTML = originalBtnContent;
         
-        alert('✅ Policy data loaded successfully!');
+        // alert('✅ Policy data loaded successfully!');
         
       } catch (error) {
         console.error('Error fetching policy data:', error);
         
         // Restore button state
-        event.target.disabled = false;
-        event.target.innerHTML = '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg> Fetch & Populate';
+        let btn = event ? event.target : document.querySelector('.sidebar-url-input button');
+        btn.disabled = false;
+        btn.innerHTML = '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg> Fetch from URL';
         
         // If CORS error, provide helpful message
         if (error.message.includes('CORS') || error.message.includes('fetch')) {
@@ -779,6 +1120,9 @@
       
       // Generate initial QR code
       updateQRCode();
+      
+      // Load policy list
+      loadPolicyList();
     });
 
     // Generate/Update QR Code
@@ -879,6 +1223,10 @@
       try {
         const poster = document.getElementById('poster');
 
+        // Store current transform and temporarily remove it for export
+        const currentTransform = poster.style.transform;
+        poster.style.transform = 'none';
+
         // Temporarily disable contenteditable to avoid selection issues
         const editableElements = poster.querySelectorAll('[contenteditable="true"]');
         editableElements.forEach(el => {
@@ -898,6 +1246,9 @@
           windowHeight: 1600
         });
 
+        // Restore transform
+        poster.style.transform = currentTransform;
+
         // Re-enable contenteditable
         editableElements.forEach(el => {
           el.setAttribute('contenteditable', 'true');
@@ -907,7 +1258,15 @@
         canvas.toBlob((blob) => {
           const url = URL.createObjectURL(blob);
           const link = document.createElement('a');
-          link.download = `pple-poster-${Date.now()}.png`;
+          
+          // Extract policy code from current URL
+          let fileName = 'pple-poster';
+          if (currentPolicyUrl) {
+            const policyCode = currentPolicyUrl.split('/').pop();
+            fileName = `pple-poster-${policyCode}`;
+          }
+          
+          link.download = `${fileName}.png`;
           link.href = url;
           link.click();
           URL.revokeObjectURL(url);
@@ -921,6 +1280,9 @@
         button.disabled = false;
         button.innerHTML = originalContent;
 
+        // Restore transform
+        poster.style.transform = currentTransform;
+
         // Make sure to re-enable contenteditable on error
         const editableElements = document.getElementById('poster').querySelectorAll('[contenteditable="true"]');
         editableElements.forEach(el => {
@@ -928,6 +1290,26 @@
         });
       }
     }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      // Store original content
+      document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+        originalContent[el.className] = el.innerHTML;
+      });
+      
+      // Generate initial QR code
+      updateQRCode();
+      
+      // Load policy list
+      loadPolicyList();
+      
+      // Scale poster to fit
+      scalePosterToFit();
+      
+      // Re-scale on window resize
+      window.addEventListener('resize', scalePosterToFit);
+    });
   </script>
 </body>
 
