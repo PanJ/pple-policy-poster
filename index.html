@@ -729,7 +729,7 @@
     <!-- Toolbar -->
     <div class="toolbar">
       <div>
-        <b>Policy Poster Editor</b> - กดแก้ text บนรูปได้เลย • <kbd>j</kbd>/<kbd>k</kbd> ดูโปสเตอร์ • <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&lt;</kbd>/<kbd>&gt;</kbd>/<kbd>/</kbd> ปรับขนาดฟอนต์ • <kbd>Ctrl</kbd>+<kbd>S</kbd> บันทึก PNG
+        <b>Policy Poster Editor</b> - กดแก้ text บนรูปได้เลย • <kbd>j</kbd>/<kbd>k</kbd> ดูโปสเตอร์ • <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>&lt;</kbd>/<kbd>&gt;</kbd>/<kbd>/</kbd> ปรับขนาดฟอนต์ • <kbd>Ctrl</kbd>+<kbd>S</kbd> บันทึก PNG
       </div>
       <div class="toolbar-buttons">
         <button class="btn-secondary" onclick="resetToOriginal()">
@@ -938,6 +938,16 @@
       // Store running number for use in policy number field
       window.currentRunningNumber = runningNumber;
       
+      // Reset font sizes to original
+      document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+        const className = el.className;
+        if (originalFontSizes[className]) {
+          el.style.fontSize = originalFontSizes[className];
+        } else {
+          el.style.fontSize = '';
+        }
+      });
+      
       // Update URL input and fetch
       document.getElementById('policyUrlInput').value = url;
       currentPolicyUrl = url;
@@ -969,24 +979,24 @@
     
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
-      // Export shortcuts work everywhere
-      if ((e.ctrlKey || e.metaKey) && (e.key === 'e' || e.key === 's')) {
+      // Export shortcuts work everywhere (including Thai keyboard)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'e' || e.key === 's' || e.key === 'ำ' || e.key === 'ส')) {
         e.preventDefault();
         exportAsPNG();
         return;
       }
       
-      // Font size shortcuts when focused on contenteditable (with Ctrl+Shift modifier)
-      if (e.target.isContentEditable && focusedEditableElement && (e.ctrlKey || e.metaKey) && e.shiftKey) {
-        if (e.key === '>' || e.key === '.') {
+      // Font size shortcuts when focused on contenteditable (with Ctrl+Alt modifier)
+      if (e.target.isContentEditable && focusedEditableElement && (e.ctrlKey || e.metaKey) && e.altKey) {
+        if (e.key === '>' || e.key === '.' || e.key === 'ใ') { // Thai: ใ
           e.preventDefault();
           adjustFontSize(focusedEditableElement, 2);
           return;
-        } else if (e.key === '<' || e.key === ',') {
+        } else if (e.key === '<' || e.key === ',' || e.key === 'ม') { // Thai: ม
           e.preventDefault();
           adjustFontSize(focusedEditableElement, -2);
           return;
-        } else if (e.key === '?' || e.key === '/') {
+        } else if (e.key === '/' || e.key === '?' || e.key === 'ฝ') { // Thai: ฝ
           e.preventDefault();
           resetFontSize(focusedEditableElement);
           return;
@@ -1409,58 +1419,72 @@
         // Process overlay image if present
         let tempCanvasContainer = null;
         
-        if (overlayImg.style.display !== 'none' && overlayImg.src) {
-          // Wait for image to load
-          await new Promise((resolve) => {
-            if (overlayImg.complete) {
-              resolve();
-            } else {
-              overlayImg.onload = resolve;
+        if (overlayImg.style.display !== 'none' && overlayImg.src && overlayImg.src.length > 0) {
+          try {
+            // Wait for image to load and check if it's valid
+            await new Promise((resolve, reject) => {
+              if (overlayImg.complete && overlayImg.naturalWidth > 0) {
+                resolve();
+              } else if (overlayImg.complete && overlayImg.naturalWidth === 0) {
+                reject(new Error('Image failed to load'));
+              } else {
+                overlayImg.onload = () => {
+                  if (overlayImg.naturalWidth > 0) {
+                    resolve();
+                  } else {
+                    reject(new Error('Image failed to load'));
+                  }
+                };
+                overlayImg.onerror = () => reject(new Error('Image failed to load'));
+              }
+            });
+            
+            // Create a canvas with the processed overlay (grayscale, clipped, opacity, multiply)
+            const overlayCanvas = document.createElement('canvas');
+            overlayCanvas.width = 1200;
+            overlayCanvas.height = 1193;
+            const octx = overlayCanvas.getContext('2d');
+            
+            // First, draw the background shape to multiply with
+            const backgroundShape = poster.querySelector('.background-shape svg path');
+            if (backgroundShape) {
+              octx.fillStyle = '#882F1E'; // Match the background color
+              octx.beginPath();
+              octx.moveTo(0, 0);
+              octx.lineTo(1200, 0);
+              octx.lineTo(1200, 799);
+              octx.lineTo(0, 1193);
+              octx.closePath();
+              octx.fill();
             }
-          });
-          
-          // Create a canvas with the processed overlay (grayscale, clipped, opacity, multiply)
-          const overlayCanvas = document.createElement('canvas');
-          overlayCanvas.width = 1200;
-          overlayCanvas.height = 1193;
-          const octx = overlayCanvas.getContext('2d');
-          
-          // First, draw the background shape to multiply with
-          const backgroundShape = poster.querySelector('.background-shape svg path');
-          if (backgroundShape) {
-            octx.fillStyle = '#882F1E'; // Match the background color
+            
+            // Apply clipping path for the overlay
             octx.beginPath();
             octx.moveTo(0, 0);
             octx.lineTo(1200, 0);
-            octx.lineTo(1200, 799);
+            octx.lineTo(1200, 799); // 67% of 1193
             octx.lineTo(0, 1193);
             octx.closePath();
-            octx.fill();
+            octx.clip();
+            
+            // Set multiply blend mode and draw overlay
+            octx.globalCompositeOperation = 'multiply';
+            octx.filter = 'grayscale(100%)';
+            octx.globalAlpha = 0.8;
+            octx.drawImage(overlayImg, 0, 0, 1200, 1193);
+            
+            // Create container for the processed overlay canvas
+            tempCanvasContainer = document.createElement('div');
+            tempCanvasContainer.style.cssText = 'position: absolute; top: 0; left: 0; width: 1200px; height: 1193px; pointer-events: none; z-index: 1;';
+            tempCanvasContainer.appendChild(overlayCanvas);
+            
+            // Hide original overlay and insert processed version
+            originalOverlayParent.style.display = 'none';
+            poster.querySelector('.background-layer').appendChild(tempCanvasContainer);
+          } catch (imageError) {
+            console.warn('Overlay image failed to load, exporting without overlay:', imageError);
+            // Continue without overlay image
           }
-          
-          // Apply clipping path for the overlay
-          octx.beginPath();
-          octx.moveTo(0, 0);
-          octx.lineTo(1200, 0);
-          octx.lineTo(1200, 799); // 67% of 1193
-          octx.lineTo(0, 1193);
-          octx.closePath();
-          octx.clip();
-          
-          // Set multiply blend mode and draw overlay
-          octx.globalCompositeOperation = 'multiply';
-          octx.filter = 'grayscale(100%)';
-          octx.globalAlpha = 0.8;
-          octx.drawImage(overlayImg, 0, 0, 1200, 1193);
-          
-          // Create container for the processed overlay canvas
-          tempCanvasContainer = document.createElement('div');
-          tempCanvasContainer.style.cssText = 'position: absolute; top: 0; left: 0; width: 1200px; height: 1193px; pointer-events: none; z-index: 1;';
-          tempCanvasContainer.appendChild(overlayCanvas);
-          
-          // Hide original overlay and insert processed version
-          originalOverlayParent.style.display = 'none';
-          poster.querySelector('.background-layer').appendChild(tempCanvasContainer);
         }
 
         // Temporarily disable contenteditable to avoid selection issues
