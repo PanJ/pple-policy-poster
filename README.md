@@ -25,7 +25,7 @@ A web-based editor for customizing and exporting PPLE policy posters.
    pple-policy-poster/
    ├── poster-editor.html
    ├── template/
-   │   └── template_example.svg
+   │   └── template_example_2.svg
    └── README.md
    ```
 

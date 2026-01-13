@@ -230,7 +230,7 @@
       background-color: #002A47;
       overflow: hidden;
       transform-origin: center center;
-      background: url('template/template_bg_only.svg');
+      background: url('template/template_bg_only_2.svg');
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
@@ -248,7 +248,7 @@
       top: 0;
       left: 0;
       width: 1200px;
-      height: 1193px;
+      height: 1600px;
       overflow: hidden;
       z-index: 0;
     }
@@ -261,11 +261,11 @@
 
     .background-image-overlay {
       position: absolute;
-      top: 0;
+      top: 880px;
       left: 0;
       width: 1200px;
-      height: 1193px;
-      clip-path: polygon(0 0, 100% 0, 100% 67%, 0 100%);
+      height: 720px;
+      clip-path: polygon(0 50%, 100% 0%, 100% 100%, 0 100%);
       mix-blend-mode: multiply;
       pointer-events: none;
       z-index: 1;
@@ -496,7 +496,7 @@
 
     .content {
       position: absolute;
-      top: 140px;
+      top: 160px;
       left: 120px;
       right: 120px;
       z-index: 2;
@@ -511,10 +511,20 @@
 
     .text-policy-number {
       font-family: 'Anakotmai', sans-serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: white;
+      position: absolute;
+      top: 40px;
+      left: 40px;
+    }
+
+    .text-policy-category {
+      font-family: 'Anakotmai', sans-serif;
       font-size: 40px;
       font-weight: 300;
       color: white;
-      text-shadow: 0 8px 16px rgba(0, 0, 0, 1);
+      /* text-shadow: 0 8px 16px rgba(0, 0, 0, 1); */
       margin-bottom: 24px;
       padding-right: -24px;
       line-height: 1.33;
@@ -526,7 +536,7 @@
       font-weight: 900;
       line-height: 1.2;
       color: white;
-      text-shadow: 0 8px 16px rgba(0, 0, 0, 1);
+      /* text-shadow: 0 8px 16px rgba(0, 0, 0, 1); */
       margin-bottom: 24px;
     }
 
@@ -536,15 +546,13 @@
       font-weight: 500;
       line-height: 1.33;
       color: #FF6413;
-      text-shadow: 0 8px 16px rgba(0, 0, 0, 1);
+      /* text-shadow: 0 8px 16px rgba(0, 0, 0, 1); */
     }
 
-    .pple-logo {
+    .pple-overlay {
       position: absolute;
-      top: 40px;
-      right: 40px;
-      height: 60px;
-      z-index: 5;
+      inset: 0;
+      z-index: 1;
     }
 
     .qr-group {
@@ -579,13 +587,16 @@
       color: white;
       line-height: 1.40;
       margin-bottom: 4px;
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
     }
 
     .text-qr-url {
       font-family: 'Anakotmai', sans-serif;
       font-size: 24px;
       font-weight: 500;
-      color: #FF6413;
+      /* color: #FF6413; */
+      color: #ffffff;
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
     }
 
     .text-vote-date {
@@ -786,24 +797,27 @@
       <div class="preview-wrapper">
         <div id="poster">
 
-          <img src="template/pple_logo.svg" class="pple-logo">
           <!-- Background -->
           <div class="background-layer">
             <div class="background-shape">
-              <svg viewBox="0 0 1200 1193" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0H1200V799L0 1193V0Z" fill="#882F1E"/>
+              <svg viewBox="0 0 1200 1600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 1240L1200 880V1600H0V1240Z" fill="#A53E09"/>
               </svg>
             </div>
             <div class="background-image-overlay" id="imageOverlay">
               <img id="overlayImage" src="" alt="" style="display: none;">
             </div>
           </div>
-
+          <img src="template/overlay.svg" class="pple-overlay">
+          
+          <div class="text-policy-number" contenteditable="true" data-default="นโยบายพรรคประชาชน 1/200: นโยบาย">
+            นโยบายพรรคประชาชน 1/200
+          </div>
           <!-- Editable Text Elements -->
           <div class="content">
             <div class="policy-title">
-              <div class="text-policy-number" contenteditable="true" data-default="นโยบายพรรคประชาชน 1/200: นโยบาย">
-                นโยบายพรรคประชาชน 1/200: นโยบาย
+              <div class="text-policy-category" contenteditable="true" data-default="นโยบายพรรคประชาชน 1/200: นโยบาย">
+                นโยบาย
               </div>
               <div class="text-main-title" contenteditable="true"
                 data-default="สู่สินค้าทะลัก-<br>ตัดราคา-ไม่เป็นธรรม:<br>ปกป้องอุตสาหกรรม<br>และ SMEs ไทย">
@@ -1213,29 +1227,18 @@
         
         // Update policy number using running number
         const policyNumberEl = document.querySelector('.text-policy-number');
+        const policyCategoryEl = document.querySelector('.text-policy-category');
         const runningNum = window.currentRunningNumber || '1';
         const totalPolicies = policyUrls.length || 203;
         
-        // Combine policy number and directory on same line
+        // Set policy number
+        policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/${totalPolicies}`;
+        
+        // Set policy category
         if (policyDirectory) {
-          // Create temporary span to measure text width
-          const tempSpan = document.createElement('span');
-          tempSpan.style.cssText = 'font-family: Anakotmai, sans-serif; font-size: 40px; font-weight: 300; position: absolute; visibility: hidden; white-space: nowrap;';
-          tempSpan.textContent = `นโยบายพรรคประชาชน ${runningNum}/${totalPolicies} : ${policyDirectory}`;
-          document.body.appendChild(tempSpan);
-          
-          const textWidth = tempSpan.offsetWidth;
-          const containerWidth = 960; // Available width (1200 - 240 padding)
-          document.body.removeChild(tempSpan);
-          
-          // If text is too long, break before directory
-          if (textWidth > containerWidth) {
-            policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/${totalPolicies} :<br>${policyDirectory}`;
-          } else {
-            policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/${totalPolicies} : ${policyDirectory}`;
-          }
+          policyCategoryEl.innerHTML = policyDirectory;
         } else {
-          policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/${totalPolicies}`;
+          policyCategoryEl.innerHTML = 'นโยบาย';
         }
         
         // Update URL in QR code section
@@ -1453,28 +1456,28 @@
             // Create a canvas with the processed overlay (grayscale, clipped, opacity, multiply)
             const overlayCanvas = document.createElement('canvas');
             overlayCanvas.width = 1200;
-            overlayCanvas.height = 1193;
+            overlayCanvas.height = 720;
             const octx = overlayCanvas.getContext('2d');
             
             // First, draw the background shape to multiply with
             const backgroundShape = poster.querySelector('.background-shape svg path');
             if (backgroundShape) {
-              octx.fillStyle = '#882F1E'; // Match the background color
+              octx.fillStyle = '#A53E09'; // Match the background color
               octx.beginPath();
-              octx.moveTo(0, 0);
+              octx.moveTo(0, 360); // 1240 - 880 = 360 (50% of 720)
               octx.lineTo(1200, 0);
-              octx.lineTo(1200, 799);
-              octx.lineTo(0, 1193);
+              octx.lineTo(1200, 720);
+              octx.lineTo(0, 720);
               octx.closePath();
               octx.fill();
             }
             
             // Apply clipping path for the overlay
             octx.beginPath();
-            octx.moveTo(0, 0);
+            octx.moveTo(0, 360); // 50% of 720
             octx.lineTo(1200, 0);
-            octx.lineTo(1200, 799); // 67% of 1193
-            octx.lineTo(0, 1193);
+            octx.lineTo(1200, 720);
+            octx.lineTo(0, 720);
             octx.closePath();
             octx.clip();
             
@@ -1482,11 +1485,11 @@
             octx.globalCompositeOperation = 'multiply';
             octx.filter = 'grayscale(100%)';
             octx.globalAlpha = 0.8;
-            octx.drawImage(overlayImg, 0, 0, 1200, 1193);
+            octx.drawImage(overlayImg, 0, 0, 1200, 720);
             
             // Create container for the processed overlay canvas
             tempCanvasContainer = document.createElement('div');
-            tempCanvasContainer.style.cssText = 'position: absolute; top: 0; left: 0; width: 1200px; height: 1193px; pointer-events: none; z-index: 1;';
+            tempCanvasContainer.style.cssText = 'position: absolute; top: 880px; left: 0; width: 1200px; height: 720px; pointer-events: none; z-index: 1;';
             tempCanvasContainer.appendChild(overlayCanvas);
             
             // Hide original overlay and insert processed version
