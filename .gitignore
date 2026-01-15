@@ -1,2 +1,4 @@
 # Zone.Identifier files created by Windows
 *:Zone.Identifier
+images
+node_modules
