@@ -11,7 +11,7 @@
     @font-face {
       font-family: 'Anakotmai';
       src: url('fonts/anakotmai/anakotmai-light.woff2') format('woff2'),
-           url('fonts/anakotmai/anakotmai-light.woff') format('woff');
+        url('fonts/anakotmai/anakotmai-light.woff') format('woff');
       font-weight: 300;
       font-style: normal;
       font-display: swap;
@@ -20,7 +20,7 @@
     @font-face {
       font-family: 'Anakotmai';
       src: url('fonts/anakotmai/anakotmai-medium.woff2') format('woff2'),
-           url('fonts/anakotmai/anakotmai-medium.woff') format('woff');
+        url('fonts/anakotmai/anakotmai-medium.woff') format('woff');
       font-weight: 500;
       font-style: normal;
       font-display: swap;
@@ -29,7 +29,7 @@
     @font-face {
       font-family: 'Anakotmai';
       src: url('fonts/anakotmai/anakotmai-bold.woff2') format('woff2'),
-           url('fonts/anakotmai/anakotmai-bold.woff') format('woff');
+        url('fonts/anakotmai/anakotmai-bold.woff') format('woff');
       font-weight: 700;
       font-style: normal;
       font-display: swap;
@@ -38,7 +38,7 @@
     @font-face {
       font-family: 'Anakotmai';
       src: url('fonts/anakotmai/anakotmai-bold.woff2') format('woff2'),
-           url('fonts/anakotmai/anakotmai-bold.woff') format('woff');
+        url('fonts/anakotmai/anakotmai-bold.woff') format('woff');
       font-weight: 900;
       font-style: normal;
       font-display: swap;
@@ -286,7 +286,7 @@
       background: white;
       padding: 15px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       z-index: 1000;
       display: flex;
       flex-direction: column;
@@ -310,7 +310,7 @@
       background: white;
       border: 2px solid #e2e8f0;
       border-radius: 50%;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -740,9 +740,27 @@
     <!-- Toolbar -->
     <div class="toolbar">
       <div>
-        <b>Policy Poster Editor</b> - กดแก้ text บนรูปได้เลย • <kbd>j</kbd>/<kbd>k</kbd> ก่อนหน้า/ต่อไป • <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>&lt;</kbd>/<kbd>&gt;</kbd>/<kbd>/</kbd> ปรับขนาดฟอนต์ • <kbd>Ctrl</kbd>+<kbd>S</kbd> บันทึก PNG
+        <b>Policy Poster Editor</b> - กดแก้ text บนรูปได้เลย • <kbd>j</kbd>/<kbd>k</kbd> ก่อนหน้า/ต่อไป •
+        <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>&lt;</kbd>/<kbd>&gt;</kbd>/<kbd>/</kbd> ปรับขนาดฟอนต์ •
+        <kbd>Ctrl</kbd>+<kbd>S</kbd> บันทึก PNG
       </div>
       <div class="toolbar-buttons">
+        <button class="btn-secondary" onclick="saveConfigToFile()">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+            </path>
+          </svg>
+          Save
+        </button>
+        <button class="btn-secondary" onclick="loadConfigFromFile()">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12">
+            </path>
+          </svg>
+          Load
+        </button>
         <button class="btn-secondary" onclick="resetToOriginal()">
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -793,7 +811,8 @@
           <input type="text" id="policyUrlInput" placeholder="Paste policy URL..." />
           <button class="btn-primary" onclick="fetchPolicyData()">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
             </svg>
             Fetch from URL
           </button>
@@ -802,934 +821,1009 @@
 
       <!-- Poster Preview -->
       <div class="preview-container">
-      <div class="preview-wrapper">
-        <div id="poster">
+        <div class="preview-wrapper">
+          <div id="poster">
 
-          <!-- Background -->
-          <div class="background-layer">
-            <div class="background-shape">
-              <svg viewBox="0 0 1200 1600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 1240L1200 880V1600H0V1240Z" fill="#A53E09"/>
-              </svg>
-            </div>
-            <div class="background-image-overlay" id="imageOverlay">
-              <img id="overlayImage" src="" alt="" style="display: none;">
-            </div>
-          </div>
-          <img src="template/overlay.svg" class="pple-overlay">
-          
-          <div class="text-policy-number" contenteditable="true" data-default="นโยบายพรรคประชาชน 1/200: นโยบาย">
-            นโยบายพรรคประชาชน 1/200
-          </div>
-          <!-- Editable Text Elements -->
-          <div class="content">
-            <div class="policy-title">
-              <div class="text-policy-category" contenteditable="true" data-default="นโยบายพรรคประชาชน 1/200: นโยบาย">
-                นโยบาย
+            <!-- Background -->
+            <div class="background-layer">
+              <div class="background-shape">
+                <svg viewBox="0 0 1200 1600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0 1240L1200 880V1600H0V1240Z" fill="#A53E09" />
+                </svg>
               </div>
-              <div class="text-main-title" contenteditable="true"
-                data-default="สู่สินค้าทะลัก-<br>ตัดราคา-ไม่เป็นธรรม:<br>ปกป้องอุตสาหกรรม<br>และ SMEs ไทย">
-                สู่สินค้าทะลัก-<br>ตัดราคา-ไม่เป็นธรรม:<br>ปกป้องอุตสาหกรรม<br>และ SMEs ไทย
-              </div>
-              <div class="text-description" contenteditable="true"
-                data-default="ใช้ Fast Track สกัดสินค้าทุ่มตลาด<br>ลดเวลาไต่สวน 40% มี AI เฝ้าระวังนำเข้า<br>ตั้งทีมพี่เลี้ยงช่วย SMEs เพื่อธุรกิจไทย">
-                ใช้ Fast Track สกัดสินค้าทุ่มตลาด<br>ลดเวลาไต่สวน 40% มี AI เฝ้าระวังนำเข้า<br>ตั้งทีมพี่เลี้ยงช่วย SMEs
-                เพื่อธุรกิจไทย
+              <div class="background-image-overlay" id="imageOverlay">
+                <img id="overlayImage" src="" alt="" style="display: none;">
               </div>
             </div>
-            <div class="qr-group">
-              <div class="qr-code" id="qrCode"></div>
-            <div class="qr-text-group">
-              <div class="text-qr-title" contenteditable="true" data-default="ทำทำไม? ทำอะไร? ทำอย่างไร?\nอ่านรายละเอียดนโยบายนี้ต่อที่นี่">
-                ทำทำไม? ทำอะไร? ทำอย่างไร?<br/>
-                อ่านรายละเอียดนโยบายนี้ต่อที่นี่
-              </div>
-              <div class="text-qr-url" contenteditable="true" id="qrUrlText"
-                data-default="https://election69.peoplesparty.or.th/policy/3/A-1-4"
-                oninput="updateQRCode()">
-                https://election69.peoplesparty.or.th/policy/3/A-1-4</div>
+            <img src="template/overlay.svg" class="pple-overlay">
+
+            <div class="text-policy-number" contenteditable="true" data-default="นโยบายพรรคประชาชน 1/200: นโยบาย">
+              นโยบายพรรคประชาชน 1/200
             </div>
+            <!-- Editable Text Elements -->
+            <div class="content">
+              <div class="policy-title">
+                <div class="text-policy-category" contenteditable="true" data-default="นโยบายพรรคประชาชน 1/200: นโยบาย">
+                  นโยบาย
+                </div>
+                <div class="text-main-title" contenteditable="true"
+                  data-default="สู่สินค้าทะลัก-<br>ตัดราคา-ไม่เป็นธรรม:<br>ปกป้องอุตสาหกรรม<br>และ SMEs ไทย">
+                  สู่สินค้าทะลัก-<br>ตัดราคา-ไม่เป็นธรรม:<br>ปกป้องอุตสาหกรรม<br>และ SMEs ไทย
+                </div>
+                <div class="text-description" contenteditable="true"
+                  data-default="ใช้ Fast Track สกัดสินค้าทุ่มตลาด<br>ลดเวลาไต่สวน 40% มี AI เฝ้าระวังนำเข้า<br>ตั้งทีมพี่เลี้ยงช่วย SMEs เพื่อธุรกิจไทย">
+                  ใช้ Fast Track สกัดสินค้าทุ่มตลาด<br>ลดเวลาไต่สวน 40% มี AI เฝ้าระวังนำเข้า<br>ตั้งทีมพี่เลี้ยงช่วย
+                  SMEs
+                  เพื่อธุรกิจไทย
+                </div>
+              </div>
+              <div class="qr-group">
+                <div class="qr-code" id="qrCode"></div>
+                <div class="qr-text-group">
+                  <div class="text-qr-title" contenteditable="true"
+                    data-default="ทำทำไม? ทำอะไร? ทำอย่างไร?\nอ่านรายละเอียดนโยบายนี้ต่อที่นี่">
+                    ทำทำไม? ทำอะไร? ทำอย่างไร?<br />
+                    อ่านรายละเอียดนโยบายนี้ต่อที่นี่
+                  </div>
+                  <div class="text-qr-url" contenteditable="true" id="qrUrlText"
+                    data-default="https://election69.peoplesparty.or.th/policy/3/A-1-4" oninput="updateQRCode()">
+                    https://election69.peoplesparty.or.th/policy/3/A-1-4</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Image Toggle Button -->
-    <button class="image-toggle-btn" onclick="toggleImagePanel()" title="Toggle image controls">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-      </svg>
-    </button>
+      <!-- Image Toggle Button -->
+      <button class="image-toggle-btn" onclick="toggleImagePanel()" title="Toggle image controls">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+          </path>
+        </svg>
+      </button>
 
-    <!-- Image Upload Control -->
-    <div class="image-upload-control hidden" id="imageUploadControl">
-      <div class="panel-header">
-        <label>Background Image Overlay</label>
-        <button class="panel-close-btn" onclick="toggleImagePanel()" title="Close panel">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </button>
+      <!-- Image Upload Control -->
+      <div class="image-upload-control hidden" id="imageUploadControl">
+        <div class="panel-header">
+          <label>Background Image Overlay</label>
+          <button class="panel-close-btn" onclick="toggleImagePanel()" title="Close panel">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <input type="text" id="imageUrlInput" placeholder="Enter image URL" />
+        <button class="btn-secondary" onclick="loadImageFromUrl()">Load URL</button>
+        <label>Or upload file:</label>
+        <input type="file" id="imageFileInput" accept="image/*" onchange="loadImageFromFile(event)" />
+        <button class="btn-secondary" onclick="clearImage()">Clear Image</button>
       </div>
-      <input type="text" id="imageUrlInput" placeholder="Enter image URL" />
-      <button class="btn-secondary" onclick="loadImageFromUrl()">Load URL</button>
-      <label>Or upload file:</label>
-      <input type="file" id="imageFileInput" accept="image/*" onchange="loadImageFromFile(event)" />
-      <button class="btn-secondary" onclick="clearImage()">Clear Image</button>
     </div>
-  </div>
 
-  <script>
-    // Store original content for reset
-    const originalContent = {};
-    const originalFontSizes = {};
-    let currentImageUrl = '';
-    let policyUrls = [];
-    let currentPolicyUrl = null;
-    let currentPolicyIndex = 0;
-    let focusedEditableElement = null;
-    
-    // LocalStorage functions
-    function saveCurrentState() {
-      if (!currentPolicyUrl) return;
-      
-      const state = {
-        textContent: {},
-        fontSizes: {},
-        imageUrl: currentImageUrl,
-        timestamp: Date.now()
-      };
-      
-      // Save all editable text content and font sizes
-      document.querySelectorAll('[contenteditable="true"]').forEach(el => {
-        state.textContent[el.className] = el.innerHTML;
-        state.fontSizes[el.className] = el.style.fontSize || '';
-      });
-      
-      localStorage.setItem(`policy_state_${currentPolicyUrl}`, JSON.stringify(state));
-    }
-    
-    function loadSavedState() {
-      if (!currentPolicyUrl) return false;
-      
-      const savedState = localStorage.getItem(`policy_state_${currentPolicyUrl}`);
-      if (!savedState) return false;
-      
-      try {
-        const state = JSON.parse(savedState);
-        
-        // Restore text content and font sizes
+    <script>
+      // Store original content for reset
+      const originalContent = {};
+      const originalFontSizes = {};
+      let currentImageUrl = '';
+      let policyUrls = [];
+      let currentPolicyUrl = null;
+      let currentPolicyIndex = 0;
+      let focusedEditableElement = null;
+
+      // LocalStorage functions
+      function saveCurrentState() {
+        if (!currentPolicyUrl) return;
+
+        const state = {
+          textContent: {},
+          fontSizes: {},
+          imageUrl: currentImageUrl,
+          timestamp: Date.now()
+        };
+
+        // Save all editable text content and font sizes
         document.querySelectorAll('[contenteditable="true"]').forEach(el => {
-          if (state.textContent[el.className]) {
-            el.innerHTML = state.textContent[el.className];
-          }
-          if (state.fontSizes[el.className]) {
-            el.style.fontSize = state.fontSizes[el.className];
-          }
+          state.textContent[el.className] = el.innerHTML;
+          state.fontSizes[el.className] = el.style.fontSize || '';
         });
-        
-        // Restore image
-        if (state.imageUrl) {
-          document.getElementById('imageUrlInput').value = state.imageUrl;
-          const img = document.getElementById('overlayImage');
-          img.src = state.imageUrl;
-          img.style.display = 'block';
-          currentImageUrl = state.imageUrl;
-        } else {
-          document.getElementById('overlayImage').style.display = 'none';
-          currentImageUrl = '';
-        }
-        
-        return true;
-      } catch (error) {
-        console.error('Error loading saved state:', error);
-        return false;
-      }
-    }
-    
-    function clearSavedState() {
-      if (!currentPolicyUrl) return;
-      localStorage.removeItem(`policy_state_${currentPolicyUrl}`);
-    }
 
-    // Scale poster to fit viewport
-    function scalePosterToFit() {
-      const poster = document.getElementById('poster');
-      const container = document.querySelector('.preview-container');
-      
-      if (!poster || !container) return;
-      
-      const containerRect = container.getBoundingClientRect();
-      const availableWidth = containerRect.width - 40; // Account for padding
-      const availableHeight = containerRect.height - 40;
-      
-      const posterWidth = 1200;
-      const posterHeight = 1600;
-      
-      // Calculate scale factors for both dimensions
-      const scaleX = availableWidth / posterWidth;
-      const scaleY = availableHeight / posterHeight;
-      
-      // Use the smaller scale to ensure the poster fits completely
-      const scale = Math.min(scaleX, scaleY, 1); // Cap at 1 to avoid upscaling
-      
-      poster.style.transform = `scale(${scale})`;
-    }
+        localStorage.setItem(`policy_state_${currentPolicyUrl}`, JSON.stringify(state));
+      }
 
-    // Load policy URLs from JSON file
-    async function loadPolicyList() {
-      try {
-        const response = await fetch('policy-urls.json');
-        policyUrls = await response.json();
-        
-        const policyListEl = document.getElementById('policyList');
-        policyListEl.innerHTML = '';
-        
-        policyUrls.forEach((url, index) => {
-          const policyCode = url.split('/').pop();
-          const runningNumber = index + 1;
-          const item = document.createElement('div');
-          item.className = 'policy-item';
-          item.dataset.runningNumber = runningNumber;
-          item.innerHTML = `<span class="policy-item-number">#${runningNumber}</span><span class="policy-item-code">${policyCode}</span>`;
-          item.onclick = () => loadPolicyFromSidebar(url, item, runningNumber);
-          policyListEl.appendChild(item);
-        });
-        
-        console.log(`Loaded ${policyUrls.length} policies`);
-        
-        // Automatically load the first policy
-        if (policyUrls.length > 0) {
-          const firstItem = policyListEl.querySelector('.policy-item');
-          loadPolicyFromSidebar(policyUrls[0], firstItem, 1);
-        }
-      } catch (error) {
-        console.error('Error loading policy list:', error);
-        document.getElementById('policyList').innerHTML = 
-          '<div style="padding: 20px; text-align: center; color: #e53e3e;">❌ Failed to load policies</div>';
-      }
-    }
+      function loadSavedState() {
+        if (!currentPolicyUrl) return false;
 
-    // Load policy from sidebar click
-    function loadPolicyFromSidebar(url, itemEl, runningNumber) {
-      // Update active state
-      document.querySelectorAll('.policy-item').forEach(el => el.classList.remove('active'));
-      itemEl.classList.add('active');
-      
-      // Update current index
-      currentPolicyIndex = parseInt(itemEl.dataset.runningNumber) - 1;
-      
-      // Store running number for use in policy number field
-      window.currentRunningNumber = runningNumber;
-      
-      // Update URL input
-      document.getElementById('policyUrlInput').value = url;
-      currentPolicyUrl = url;
-      
-      // Try to load saved state first, otherwise fetch
-      const hasSavedState = loadSavedState();
-      if (hasSavedState) {
-        console.log('Loaded saved state for:', url);
-        updateQRCode();
-      } else {
-        // Reset font sizes to original before fetching
-        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
-          const className = el.className;
-          if (originalFontSizes[className]) {
-            el.style.fontSize = originalFontSizes[className];
-          } else {
-            el.style.fontSize = '';
-          }
-        });
-        fetchPolicyData();
-      }
-    }
-    
-    // Navigate to next policy
-    function navigateToPolicy(direction) {
-      const policyItems = document.querySelectorAll('.policy-item');
-      if (policyItems.length === 0) return;
-      
-      // Calculate new index
-      let newIndex = currentPolicyIndex + direction;
-      
-      // Wrap around
-      if (newIndex < 0) newIndex = policyItems.length - 1;
-      if (newIndex >= policyItems.length) newIndex = 0;
-      
-      // Load the policy
-      const item = policyItems[newIndex];
-      const url = policyUrls[newIndex];
-      const runningNumber = newIndex + 1;
-      
-      loadPolicyFromSidebar(url, item, runningNumber);
-      
-      // Scroll into view
-      item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-    
-    // Keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
-      // Export shortcuts work everywhere (including Thai keyboard)
-      if ((e.ctrlKey || e.metaKey) && (e.key === 'e' || e.key === 's' || e.key === 'ำ' || e.key === 'ส')) {
-        e.preventDefault();
-        exportAsPNG();
-        return;
-      }
-      
-      // Font size shortcuts when focused on contenteditable (with Ctrl+Alt modifier)
-      if (e.target.isContentEditable && focusedEditableElement && (e.ctrlKey || e.metaKey) && e.altKey) {
-        if (e.key === '>' || e.key === '.' || e.key === 'ใ') { // Thai: ใ
-          e.preventDefault();
-          adjustFontSize(focusedEditableElement, 2);
-          return;
-        } else if (e.key === '<' || e.key === ',' || e.key === 'ม') { // Thai: ม
-          e.preventDefault();
-          adjustFontSize(focusedEditableElement, -2);
-          return;
-        } else if (e.key === '/' || e.key === '?' || e.key === 'ฝ') { // Thai: ฝ
-          e.preventDefault();
-          resetFontSize(focusedEditableElement);
-          return;
-        }
-      }
-      
-      // Ignore navigation shortcuts if typing in input field or contenteditable
-      if (e.target.tagName === 'INPUT' || e.target.isContentEditable) {
-        return;
-      }
-      
-      // Arrow keys for navigation (including Thai keyboard ่/า)
-      if (e.key === 'ArrowDown' || e.key === 'k' || e.key === 'า') {
-        e.preventDefault();
-        navigateToPolicy(1); // Next
-      } else if (e.key === 'ArrowUp' || e.key === 'j' || e.key === '่') {
-        e.preventDefault();
-        navigateToPolicy(-1); // Previous
-      }
-    });
-    
-    // Track focused editable element
-    document.addEventListener('focusin', (e) => {
-      if (e.target.isContentEditable) {
-        focusedEditableElement = e.target;
-      }
-    });
-    
-    document.addEventListener('focusout', (e) => {
-      if (e.target.isContentEditable) {
-        focusedEditableElement = null;
-      }
-    });
-    
-    // Adjust font size
-    function adjustFontSize(element, change) {
-      const currentSize = parseFloat(window.getComputedStyle(element).fontSize);
-      const newSize = Math.max(12, currentSize + change); // Minimum 12px
-      element.style.fontSize = newSize + 'px';
-    }
-    
-    // Reset font size to original
-    function resetFontSize(element) {
-      const className = element.className;
-      if (originalFontSizes[className]) {
-        element.style.fontSize = originalFontSizes[className];
-      } else {
-        element.style.fontSize = '';
-      }
-    }
-    
-    // Fetch and populate policy data from URL
-    async function fetchPolicyData(event) {
-      const urlInput = document.getElementById('policyUrlInput');
-      const url = urlInput.value.trim();
-      
-      if (!url) {
-        alert('Please enter a policy URL');
-        return;
-      }
-      
-      // Validate URL format
-      if (!url.includes('election69.peoplesparty.or.th')) {
-        alert('Please enter a valid People\'s Party policy URL');
-        return;
-      }
-      
-      try {
-        // Show loading state
-        let btn = event ? event.target : document.querySelector('.sidebar-url-input button');
-        const originalBtnContent = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = '<span class="loading"></span> Fetching...';
-        
-        // Fetch the page content
-        // Note: Due to CORS restrictions, we'll need to use a proxy or handle this differently
-        // For now, we'll try direct fetch, but may need to use a CORS proxy
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch policy page');
-        }
-        
-        const html = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        
-        console.log('Parsing HTML from:', url);
-        
-        // Extract policy data with multiple selector attempts
-        let title = doc.querySelector('h1')?.textContent?.trim() ||
-                   doc.querySelector('.policy-title')?.textContent?.trim() ||
-                   doc.querySelector('[class*="title"]')?.textContent?.trim() ||
-                   doc.querySelector('meta[property="og:title"]')?.getAttribute('content');
-        
-        // Find subtitle - it's the p element under the policy title
-        let subtitle = null;
-        const h1Element = doc.querySelector('h1');
-        if (h1Element) {
-          // Try to find p element as next sibling or in parent container
-          subtitle = h1Element.nextElementSibling?.tagName === 'P' ? h1Element.nextElementSibling.textContent?.trim() : null;
-          
-          // If not found, try parent's next p element
-          if (!subtitle) {
-            const parent = h1Element.parentElement;
-            subtitle = parent?.querySelector('p')?.textContent?.trim();
-          }
-        }
-        
-        // Fallback to general p element search if still not found
-        if (!subtitle) {
-          subtitle = doc.querySelector('h1 + p')?.textContent?.trim() ||
-                    doc.querySelector('article p')?.textContent?.trim() ||
-                    doc.querySelector('meta[property="og:description"]')?.getAttribute('content') ||
-                    doc.querySelector('meta[name="description"]')?.getAttribute('content');
-        }
-        
-        // Extract policy directory/breadcrumb (category path)
-        let policyDirectory = '';
-        
-        // Look for the specific div with category information
-        const categoryDiv = doc.querySelector('.flex.flex-row.items-center.gap-3.w-fit.whitespace-nowrap.text-lg') ||
-                           doc.querySelector('div[class*="flex"][class*="flex-row"][class*="items-center"]');
-        
-        if (categoryDiv) {
-          // Since they use SVG chevrons instead of "/" text, extract text from child elements
-          const textElements = categoryDiv.querySelectorAll('a, span, div');
-          const categories = [];
-          
-          textElements.forEach(el => {
-            // Skip SVG elements and empty text
-            if (el.tagName !== 'svg' && !el.querySelector('svg')) {
-              const text = el.textContent?.trim();
-              if (text && text.length > 0 && text !== 'นโยบายพรรค') {
-                categories.push(text);
-              }
-            }
-          });
-          
-          console.log('Extracted categories from flex div:', categories);
-          // Get the second item (index 1) after removing "นโยบายพรรค"
-          // This is the third level overall: นโยบายพรรค (removed) / Level2 / Level3 (index 1)
-          policyDirectory = categories[2] || categories[0] || '';
-          
-          console.log('Found category div (third level):', policyDirectory);
-        }
-        
-        // Fallback: Try breadcrumb navigation
-        if (!policyDirectory) {
-          const breadcrumbSelectors = [
-            'nav[aria-label="breadcrumb"]',
-            '.breadcrumb',
-            '[class*="breadcrumb"]',
-            'nav ol',
-            'nav ul'
-          ];
-          
-          for (const selector of breadcrumbSelectors) {
-            const breadcrumb = doc.querySelector(selector);
-            if (breadcrumb) {
-              const items = breadcrumb.querySelectorAll('li, a, span, div');
-              const breadcrumbTexts = [];
-              items.forEach(item => {
-                // Skip SVG elements
-                if (item.tagName !== 'svg' && !item.querySelector('svg')) {
-                  const text = item.textContent?.trim();
-                  // Skip separators (no longer "/" but could be empty or whitespace), home links, and "นโยบายพรรค"
-                  if (text && text !== 'หน้าหลัก' && text !== 'Home' && text !== 'นโยบายพรรค' &&
-                      !text.match(/^\s*$/) && text.length > 1) {
-                    breadcrumbTexts.push(text);
-                  }
-                }
-              });
-              console.log('Breadcrumb texts found:', breadcrumbTexts);
-              // Get unique texts and extract the second item (index 1) 
-              // This is third level after: นโยบายพรรค (filtered) / Level2 / Level3 (index 1)
-              const uniqueTexts = [...new Set(breadcrumbTexts)].filter(t => t.length > 1);
-              policyDirectory = uniqueTexts[1] || uniqueTexts[0] || '';
-              if (policyDirectory && policyDirectory.length > 0) {
-                console.log('Found via breadcrumb (third level):', policyDirectory);
-                break;
-              }
-            }
-          }
-        }
-        
-        // Log for debugging if still not found
-        if (!policyDirectory) {
-          console.log('No directory found. Searching for flex divs...');
-          const flexDivs = doc.querySelectorAll('div[class*="flex"]');
-          console.log('Found flex divs:', flexDivs.length);
-          flexDivs.forEach((div, i) => {
-            if (i < 5) console.log(`Flex div ${i}:`, div.className, div.textContent?.substring(0, 100));
-          });
-        }
-        
-        console.log('Final extracted directory:', policyDirectory);
-        
-        const featuredImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || 
-                             doc.querySelector('meta[name="twitter:image"]')?.getAttribute('content') ||
-                             doc.querySelector('.featured-image img')?.src ||
-                             doc.querySelector('.policy-image img')?.src ||
-                             doc.querySelector('article img')?.src;
-        
-        console.log('Extracted data:', { title, subtitle, featuredImage });
-        
-        // Extract policy number from URL or page
-        const urlParts = url.split('/');
-        const policyId = urlParts[urlParts.length - 1];
-        const policyCategory = urlParts[urlParts.length - 2];
-        
-        // Populate poster fields
-        const titleEl = document.querySelector('.text-main-title');
-        const subtitleEl = document.querySelector('.text-description');
-        
-        if (title) {
-          titleEl.innerHTML = title.replace(/\n/g, '<br>');
-          console.log('Title updated:', title);
-        } else {
-          console.warn('No title found');
-        }
-        
-        if (subtitle && !subtitle.includes('อ่านรายละเอียดนโยบายพรรคประชาชน')) {
-          subtitleEl.innerHTML = subtitle.replace(/\n/g, '<br>');
-          subtitleEl.style.display = 'block';
-          console.log('Subtitle updated:', subtitle);
-        } else {
-          subtitleEl.style.display = 'none';
-          console.warn('No subtitle found or default text detected');
-        }
-        
-        // Update policy number using running number
-        const policyNumberEl = document.querySelector('.text-policy-number');
-        const policyCategoryEl = document.querySelector('.text-policy-category');
-        const runningNum = window.currentRunningNumber || '1';
-        const totalPolicies = policyUrls.length || 203;
-        
-        // Set policy number
-        policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/${totalPolicies}`;
-        
-        // Set policy category
-        if (policyDirectory) {
-          policyCategoryEl.innerHTML = policyDirectory;
-        } else {
-          policyCategoryEl.innerHTML = 'นโยบาย';
-        }
-        
-        // Update URL in QR code section
-        const qrUrlEl = document.getElementById('qrUrlText');
-        qrUrlEl.textContent = url;
-        updateQRCode();
-        
-        // Load featured image if available
-        if (featuredImage) {
-          const imgUrl = featuredImage.startsWith('http') ? featuredImage : new URL(featuredImage, url).href;
-          document.getElementById('imageUrlInput').value = imgUrl;
-          loadImageFromUrl();
-        }
-        
-        // Save initial state after fetching
-        setTimeout(saveCurrentState, 500);
-        
-        // Restore button state
-        btn.disabled = false;
-        btn.innerHTML = originalBtnContent;
-        
-        // alert('✅ Policy data loaded successfully!');
-        
-      } catch (error) {
-        console.error('Error fetching policy data:', error);
-        
-        // Restore button state
-        let btn = event ? event.target : document.querySelector('.sidebar-url-input button');
-        btn.disabled = false;
-        btn.innerHTML = '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg> Fetch from URL';
-        
-        // If CORS error, provide helpful message
-        if (error.message.includes('CORS') || error.message.includes('fetch')) {
-          alert('⚠️ Unable to fetch due to CORS restrictions.\n\nPlease manually copy:\n• Title\n• Subtitle\n• Image URL\n\nOr the page needs to allow cross-origin requests.');
-        } else {
-          alert('❌ Error: ' + error.message);
-        }
-      }
-    }
-    
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      // Store original content and font sizes
-      document.querySelectorAll('[contenteditable="true"]').forEach(el => {
-        originalContent[el.className] = el.innerHTML;
-        originalFontSizes[el.className] = window.getComputedStyle(el).fontSize;
-        
-        // Add paste event listener to preserve styling
-        el.addEventListener('paste', (e) => {
-          e.preventDefault();
-          
-          // Get plain text from clipboard
-          const text = (e.clipboardData || window.clipboardData).getData('text/plain');
-          
-          // Insert as plain text, preserving line breaks
-          document.execCommand('insertHTML', false, text.replace(/\n/g, '<br>'));
-        });
-        
-        // Save state on input
-        el.addEventListener('input', () => {
-          saveCurrentState();
-        });
-      });
-      
-      // Save state when image changes
-      document.getElementById('imageUrlInput').addEventListener('change', () => {
-        setTimeout(saveCurrentState, 100);
-      });
-      
-      // Generate initial QR code
-      updateQRCode();
-      
-      // Load policy list
-      loadPolicyList();
-    });
+        const savedState = localStorage.getItem(`policy_state_${currentPolicyUrl}`);
+        if (!savedState) return false;
 
-    // Generate/Update QR Code
-    function updateQRCode() {
-      // Check if QRCode library is loaded
-      if (typeof QRCode === 'undefined') {
-        console.log('QRCode library not loaded yet, retrying...');
-        setTimeout(updateQRCode, 100);
-        return;
-      }
-      
-      const urlElement = document.getElementById('qrUrlText');
-      const qrContainer = document.getElementById('qrCode');
-      
-      if (!urlElement || !qrContainer) {
-        return;
-      }
-      
-      // Get the text content (strip HTML tags)
-      let url = urlElement.textContent || urlElement.innerText;
-      url = url.trim();
-      
-      if (!url) {
-        url = 'https://election69.peoplesparty.or.th/policy/3/A-1-4';
-      }
-      
-      // Clear previous QR code
-      qrContainer.innerHTML = '';
-      
-      // Generate new QR code using qrcodejs library
-      new QRCode(qrContainer, {
-        text: url,
-        width: 160,
-        height: 160,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
-
-    // Load image from URL (convert to data URL to avoid CORS issues)
-    async function loadImageFromUrl() {
-      const url = document.getElementById('imageUrlInput').value.trim();
-      if (url) {
         try {
-          // Convert to data URL to avoid CORS tainting
+          const state = JSON.parse(savedState);
+
+          // Restore text content and font sizes
+          document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+            if (state.textContent[el.className]) {
+              el.innerHTML = state.textContent[el.className];
+            }
+            if (state.fontSizes[el.className]) {
+              el.style.fontSize = state.fontSizes[el.className];
+            }
+          });
+
+          // Restore image
+          if (state.imageUrl) {
+            document.getElementById('imageUrlInput').value = state.imageUrl;
+            const img = document.getElementById('overlayImage');
+            img.src = state.imageUrl;
+            img.style.display = 'block';
+            currentImageUrl = state.imageUrl;
+          } else {
+            document.getElementById('overlayImage').style.display = 'none';
+            currentImageUrl = '';
+          }
+
+          return true;
+        } catch (error) {
+          console.error('Error loading saved state:', error);
+          return false;
+        }
+      }
+
+      function clearSavedState() {
+        if (!currentPolicyUrl) return;
+        localStorage.removeItem(`policy_state_${currentPolicyUrl}`);
+      }
+
+      // Scale poster to fit viewport
+      function scalePosterToFit() {
+        const poster = document.getElementById('poster');
+        const container = document.querySelector('.preview-container');
+
+        if (!poster || !container) return;
+
+        const containerRect = container.getBoundingClientRect();
+        const availableWidth = containerRect.width - 40; // Account for padding
+        const availableHeight = containerRect.height - 40;
+
+        const posterWidth = 1200;
+        const posterHeight = 1600;
+
+        // Calculate scale factors for both dimensions
+        const scaleX = availableWidth / posterWidth;
+        const scaleY = availableHeight / posterHeight;
+
+        // Use the smaller scale to ensure the poster fits completely
+        const scale = Math.min(scaleX, scaleY, 1); // Cap at 1 to avoid upscaling
+
+        poster.style.transform = `scale(${scale})`;
+      }
+
+      // Load policy URLs from JSON file
+      async function loadPolicyList() {
+        try {
+          const response = await fetch('policy-urls.json');
+          policyUrls = await response.json();
+
+          const policyListEl = document.getElementById('policyList');
+          policyListEl.innerHTML = '';
+
+          policyUrls.forEach((url, index) => {
+            const policyCode = url.split('/').pop();
+            const runningNumber = index + 1;
+            const item = document.createElement('div');
+            item.className = 'policy-item';
+            item.dataset.runningNumber = runningNumber;
+            item.innerHTML = `<span class="policy-item-number">#${runningNumber}</span><span class="policy-item-code">${policyCode}</span>`;
+            item.onclick = () => loadPolicyFromSidebar(url, item, runningNumber);
+            policyListEl.appendChild(item);
+          });
+
+          console.log(`Loaded ${policyUrls.length} policies`);
+
+          // Automatically load the first policy
+          if (policyUrls.length > 0) {
+            const firstItem = policyListEl.querySelector('.policy-item');
+            loadPolicyFromSidebar(policyUrls[0], firstItem, 1);
+          }
+        } catch (error) {
+          console.error('Error loading policy list:', error);
+          document.getElementById('policyList').innerHTML =
+            '<div style="padding: 20px; text-align: center; color: #e53e3e;">❌ Failed to load policies</div>';
+        }
+      }
+
+      // Load policy from sidebar click
+      function loadPolicyFromSidebar(url, itemEl, runningNumber) {
+        // Update active state
+        document.querySelectorAll('.policy-item').forEach(el => el.classList.remove('active'));
+        itemEl.classList.add('active');
+
+        // Update current index
+        currentPolicyIndex = parseInt(itemEl.dataset.runningNumber) - 1;
+
+        // Store running number for use in policy number field
+        window.currentRunningNumber = runningNumber;
+
+        // Update URL input
+        document.getElementById('policyUrlInput').value = url;
+        currentPolicyUrl = url;
+
+        // Try to load saved state first, otherwise fetch
+        const hasSavedState = loadSavedState();
+        if (hasSavedState) {
+          console.log('Loaded saved state for:', url);
+          updateQRCode();
+        } else {
+          // Reset font sizes to original before fetching
+          document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+            const className = el.className;
+            if (originalFontSizes[className]) {
+              el.style.fontSize = originalFontSizes[className];
+            } else {
+              el.style.fontSize = '';
+            }
+          });
+          fetchPolicyData();
+        }
+      }
+
+      // Navigate to next policy
+      function navigateToPolicy(direction) {
+        const policyItems = document.querySelectorAll('.policy-item');
+        if (policyItems.length === 0) return;
+
+        // Calculate new index
+        let newIndex = currentPolicyIndex + direction;
+
+        // Wrap around
+        if (newIndex < 0) newIndex = policyItems.length - 1;
+        if (newIndex >= policyItems.length) newIndex = 0;
+
+        // Load the policy
+        const item = policyItems[newIndex];
+        const url = policyUrls[newIndex];
+        const runningNumber = newIndex + 1;
+
+        loadPolicyFromSidebar(url, item, runningNumber);
+
+        // Scroll into view
+        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        // Export shortcuts work everywhere (including Thai keyboard)
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'e' || e.key === 's' || e.key === 'ำ' || e.key === 'ส')) {
+          e.preventDefault();
+          exportAsPNG();
+          return;
+        }
+
+        // Font size shortcuts when focused on contenteditable (with Ctrl+Alt modifier)
+        if (e.target.isContentEditable && focusedEditableElement && (e.ctrlKey || e.metaKey) && e.altKey) {
+          if (e.key === '>' || e.key === '.' || e.key === 'ใ') { // Thai: ใ
+            e.preventDefault();
+            adjustFontSize(focusedEditableElement, 2);
+            return;
+          } else if (e.key === '<' || e.key === ',' || e.key === 'ม') { // Thai: ม
+            e.preventDefault();
+            adjustFontSize(focusedEditableElement, -2);
+            return;
+          } else if (e.key === '/' || e.key === '?' || e.key === 'ฝ') { // Thai: ฝ
+            e.preventDefault();
+            resetFontSize(focusedEditableElement);
+            return;
+          }
+        }
+
+        // Ignore navigation shortcuts if typing in input field or contenteditable
+        if (e.target.tagName === 'INPUT' || e.target.isContentEditable) {
+          return;
+        }
+
+        // Arrow keys for navigation (including Thai keyboard ่/า)
+        if (e.key === 'ArrowDown' || e.key === 'k' || e.key === 'า') {
+          e.preventDefault();
+          navigateToPolicy(1); // Next
+        } else if (e.key === 'ArrowUp' || e.key === 'j' || e.key === '่') {
+          e.preventDefault();
+          navigateToPolicy(-1); // Previous
+        }
+      });
+
+      // Track focused editable element
+      document.addEventListener('focusin', (e) => {
+        if (e.target.isContentEditable) {
+          focusedEditableElement = e.target;
+        }
+      });
+
+      document.addEventListener('focusout', (e) => {
+        if (e.target.isContentEditable) {
+          focusedEditableElement = null;
+        }
+      });
+
+      // Adjust font size
+      function adjustFontSize(element, change) {
+        const currentSize = parseFloat(window.getComputedStyle(element).fontSize);
+        const newSize = Math.max(12, currentSize + change); // Minimum 12px
+        element.style.fontSize = newSize + 'px';
+      }
+
+      // Reset font size to original
+      function resetFontSize(element) {
+        const className = element.className;
+        if (originalFontSizes[className]) {
+          element.style.fontSize = originalFontSizes[className];
+        } else {
+          element.style.fontSize = '';
+        }
+      }
+
+      // Fetch and populate policy data from URL
+      async function fetchPolicyData(event) {
+        const urlInput = document.getElementById('policyUrlInput');
+        const url = urlInput.value.trim();
+
+        if (!url) {
+          alert('Please enter a policy URL');
+          return;
+        }
+
+        // Validate URL format
+        if (!url.includes('election69.peoplesparty.or.th')) {
+          alert('Please enter a valid People\'s Party policy URL');
+          return;
+        }
+
+        try {
+          // Show loading state
+          let btn = event ? event.target : document.querySelector('.sidebar-url-input button');
+          const originalBtnContent = btn.innerHTML;
+          btn.disabled = true;
+          btn.innerHTML = '<span class="loading"></span> Fetching...';
+
+          // Fetch the page content
+          // Note: Due to CORS restrictions, we'll need to use a proxy or handle this differently
+          // For now, we'll try direct fetch, but may need to use a CORS proxy
           const response = await fetch(url);
-          const blob = await response.blob();
+
+          if (!response.ok) {
+            throw new Error('Failed to fetch policy page');
+          }
+
+          const html = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+
+          console.log('Parsing HTML from:', url);
+
+          // Extract policy data with multiple selector attempts
+          let title = doc.querySelector('h1')?.textContent?.trim() ||
+            doc.querySelector('.policy-title')?.textContent?.trim() ||
+            doc.querySelector('[class*="title"]')?.textContent?.trim() ||
+            doc.querySelector('meta[property="og:title"]')?.getAttribute('content');
+
+          // Find subtitle - it's the p element under the policy title
+          let subtitle = null;
+          const h1Element = doc.querySelector('h1');
+          if (h1Element) {
+            // Try to find p element as next sibling or in parent container
+            subtitle = h1Element.nextElementSibling?.tagName === 'P' ? h1Element.nextElementSibling.textContent?.trim() : null;
+
+            // If not found, try parent's next p element
+            if (!subtitle) {
+              const parent = h1Element.parentElement;
+              subtitle = parent?.querySelector('p')?.textContent?.trim();
+            }
+          }
+
+          // Fallback to general p element search if still not found
+          if (!subtitle) {
+            subtitle = doc.querySelector('h1 + p')?.textContent?.trim() ||
+              doc.querySelector('article p')?.textContent?.trim() ||
+              doc.querySelector('meta[property="og:description"]')?.getAttribute('content') ||
+              doc.querySelector('meta[name="description"]')?.getAttribute('content');
+          }
+
+          // Extract policy directory/breadcrumb (category path)
+          let policyDirectory = '';
+
+          // Look for the specific div with category information
+          const categoryDiv = doc.querySelector('.flex.flex-row.items-center.gap-3.w-fit.whitespace-nowrap.text-lg') ||
+            doc.querySelector('div[class*="flex"][class*="flex-row"][class*="items-center"]');
+
+          if (categoryDiv) {
+            // Since they use SVG chevrons instead of "/" text, extract text from child elements
+            const textElements = categoryDiv.querySelectorAll('a, span, div');
+            const categories = [];
+
+            textElements.forEach(el => {
+              // Skip SVG elements and empty text
+              if (el.tagName !== 'svg' && !el.querySelector('svg')) {
+                const text = el.textContent?.trim();
+                if (text && text.length > 0 && text !== 'นโยบายพรรค') {
+                  categories.push(text);
+                }
+              }
+            });
+
+            console.log('Extracted categories from flex div:', categories);
+            // Get the second item (index 1) after removing "นโยบายพรรค"
+            // This is the third level overall: นโยบายพรรค (removed) / Level2 / Level3 (index 1)
+            policyDirectory = categories[2] || categories[0] || '';
+
+            console.log('Found category div (third level):', policyDirectory);
+          }
+
+          // Fallback: Try breadcrumb navigation
+          if (!policyDirectory) {
+            const breadcrumbSelectors = [
+              'nav[aria-label="breadcrumb"]',
+              '.breadcrumb',
+              '[class*="breadcrumb"]',
+              'nav ol',
+              'nav ul'
+            ];
+
+            for (const selector of breadcrumbSelectors) {
+              const breadcrumb = doc.querySelector(selector);
+              if (breadcrumb) {
+                const items = breadcrumb.querySelectorAll('li, a, span, div');
+                const breadcrumbTexts = [];
+                items.forEach(item => {
+                  // Skip SVG elements
+                  if (item.tagName !== 'svg' && !item.querySelector('svg')) {
+                    const text = item.textContent?.trim();
+                    // Skip separators (no longer "/" but could be empty or whitespace), home links, and "นโยบายพรรค"
+                    if (text && text !== 'หน้าหลัก' && text !== 'Home' && text !== 'นโยบายพรรค' &&
+                      !text.match(/^\s*$/) && text.length > 1) {
+                      breadcrumbTexts.push(text);
+                    }
+                  }
+                });
+                console.log('Breadcrumb texts found:', breadcrumbTexts);
+                // Get unique texts and extract the second item (index 1) 
+                // This is third level after: นโยบายพรรค (filtered) / Level2 / Level3 (index 1)
+                const uniqueTexts = [...new Set(breadcrumbTexts)].filter(t => t.length > 1);
+                policyDirectory = uniqueTexts[1] || uniqueTexts[0] || '';
+                if (policyDirectory && policyDirectory.length > 0) {
+                  console.log('Found via breadcrumb (third level):', policyDirectory);
+                  break;
+                }
+              }
+            }
+          }
+
+          // Log for debugging if still not found
+          if (!policyDirectory) {
+            console.log('No directory found. Searching for flex divs...');
+            const flexDivs = doc.querySelectorAll('div[class*="flex"]');
+            console.log('Found flex divs:', flexDivs.length);
+            flexDivs.forEach((div, i) => {
+              if (i < 5) console.log(`Flex div ${i}:`, div.className, div.textContent?.substring(0, 100));
+            });
+          }
+
+          console.log('Final extracted directory:', policyDirectory);
+
+          const featuredImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') ||
+            doc.querySelector('meta[name="twitter:image"]')?.getAttribute('content') ||
+            doc.querySelector('.featured-image img')?.src ||
+            doc.querySelector('.policy-image img')?.src ||
+            doc.querySelector('article img')?.src;
+
+          console.log('Extracted data:', { title, subtitle, featuredImage });
+
+          // Extract policy number from URL or page
+          const urlParts = url.split('/');
+          const policyId = urlParts[urlParts.length - 1];
+          const policyCategory = urlParts[urlParts.length - 2];
+
+          // Populate poster fields
+          const titleEl = document.querySelector('.text-main-title');
+          const subtitleEl = document.querySelector('.text-description');
+
+          if (title) {
+            titleEl.innerHTML = title.replace(/\n/g, '<br>');
+            console.log('Title updated:', title);
+          } else {
+            console.warn('No title found');
+          }
+
+          if (subtitle && !subtitle.includes('อ่านรายละเอียดนโยบายพรรคประชาชน')) {
+            subtitleEl.innerHTML = subtitle.replace(/\n/g, '<br>');
+            subtitleEl.style.display = 'block';
+            console.log('Subtitle updated:', subtitle);
+          } else {
+            subtitleEl.style.display = 'none';
+            console.warn('No subtitle found or default text detected');
+          }
+
+          // Update policy number using running number
+          const policyNumberEl = document.querySelector('.text-policy-number');
+          const policyCategoryEl = document.querySelector('.text-policy-category');
+          const runningNum = window.currentRunningNumber || '1';
+          const totalPolicies = policyUrls.length || 203;
+
+          // Set policy number
+          policyNumberEl.innerHTML = `นโยบายพรรคประชาชน ${runningNum}/${totalPolicies}`;
+
+          // Set policy category
+          if (policyDirectory) {
+            policyCategoryEl.innerHTML = policyDirectory;
+          } else {
+            policyCategoryEl.innerHTML = 'นโยบาย';
+          }
+
+          // Update URL in QR code section
+          const qrUrlEl = document.getElementById('qrUrlText');
+          qrUrlEl.textContent = url;
+          updateQRCode();
+
+          // Load featured image if available
+          if (featuredImage) {
+            const imgUrl = featuredImage.startsWith('http') ? featuredImage : new URL(featuredImage, url).href;
+            document.getElementById('imageUrlInput').value = imgUrl;
+            loadImageFromUrl();
+          }
+
+          // Save initial state after fetching
+          setTimeout(saveCurrentState, 500);
+
+          // Restore button state
+          btn.disabled = false;
+          btn.innerHTML = originalBtnContent;
+
+          // alert('✅ Policy data loaded successfully!');
+
+        } catch (error) {
+          console.error('Error fetching policy data:', error);
+
+          // Restore button state
+          let btn = event ? event.target : document.querySelector('.sidebar-url-input button');
+          btn.disabled = false;
+          btn.innerHTML = '<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg> Fetch from URL';
+
+          // If CORS error, provide helpful message
+          if (error.message.includes('CORS') || error.message.includes('fetch')) {
+            alert('⚠️ Unable to fetch due to CORS restrictions.\n\nPlease manually copy:\n• Title\n• Subtitle\n• Image URL\n\nOr the page needs to allow cross-origin requests.');
+          } else {
+            alert('❌ Error: ' + error.message);
+          }
+        }
+      }
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', () => {
+        // Store original content and font sizes
+        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+          originalContent[el.className] = el.innerHTML;
+          originalFontSizes[el.className] = window.getComputedStyle(el).fontSize;
+
+          // Add paste event listener to preserve styling
+          el.addEventListener('paste', (e) => {
+            e.preventDefault();
+
+            // Get plain text from clipboard
+            const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+
+            // Insert as plain text, preserving line breaks
+            document.execCommand('insertHTML', false, text.replace(/\n/g, '<br>'));
+          });
+
+          // Save state on input
+          el.addEventListener('input', () => {
+            saveCurrentState();
+          });
+        });
+
+        // Save state when image changes
+        document.getElementById('imageUrlInput').addEventListener('change', () => {
+          setTimeout(saveCurrentState, 100);
+        });
+
+        // Generate initial QR code
+        updateQRCode();
+
+        // Load policy list
+        loadPolicyList();
+      });
+
+      // Generate/Update QR Code
+      function updateQRCode() {
+        // Check if QRCode library is loaded
+        if (typeof QRCode === 'undefined') {
+          console.log('QRCode library not loaded yet, retrying...');
+          setTimeout(updateQRCode, 100);
+          return;
+        }
+
+        const urlElement = document.getElementById('qrUrlText');
+        const qrContainer = document.getElementById('qrCode');
+
+        if (!urlElement || !qrContainer) {
+          return;
+        }
+
+        // Get the text content (strip HTML tags)
+        let url = urlElement.textContent || urlElement.innerText;
+        url = url.trim();
+
+        if (!url) {
+          url = 'https://election69.peoplesparty.or.th/policy/3/A-1-4';
+        }
+
+        // Clear previous QR code
+        qrContainer.innerHTML = '';
+
+        // Generate new QR code using qrcodejs library
+        new QRCode(qrContainer, {
+          text: url,
+          width: 160,
+          height: 160,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      }
+
+      // Load image from URL (convert to data URL to avoid CORS issues)
+      async function loadImageFromUrl() {
+        const url = document.getElementById('imageUrlInput').value.trim();
+        if (url) {
+          try {
+            // Convert to data URL to avoid CORS tainting
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const img = document.getElementById('overlayImage');
+              img.src = e.target.result;
+              img.style.display = 'block';
+              currentImageUrl = e.target.result;
+              saveCurrentState();
+            };
+            reader.readAsDataURL(blob);
+          } catch (error) {
+            console.error('Error loading image:', error);
+            // Fallback to direct URL if fetch fails
+            const img = document.getElementById('overlayImage');
+            img.src = url;
+            img.style.display = 'block';
+            currentImageUrl = url;
+            saveCurrentState();
+          }
+        }
+      }
+
+      // Load image from file
+      function loadImageFromFile(event) {
+        const file = event.target.files[0];
+        if (file) {
           const reader = new FileReader();
-          reader.onload = function(e) {
+          reader.onload = function (e) {
             const img = document.getElementById('overlayImage');
             img.src = e.target.result;
             img.style.display = 'block';
             currentImageUrl = e.target.result;
             saveCurrentState();
           };
-          reader.readAsDataURL(blob);
-        } catch (error) {
-          console.error('Error loading image:', error);
-          // Fallback to direct URL if fetch fails
-          const img = document.getElementById('overlayImage');
-          img.src = url;
-          img.style.display = 'block';
-          currentImageUrl = url;
-          saveCurrentState();
+          reader.readAsDataURL(file);
         }
       }
-    }
 
-    // Load image from file
-    function loadImageFromFile(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const img = document.getElementById('overlayImage');
-          img.src = e.target.result;
-          img.style.display = 'block';
-          currentImageUrl = e.target.result;
-          saveCurrentState();
-        };
-        reader.readAsDataURL(file);
+      // Clear image
+      function clearImage() {
+        const img = document.getElementById('overlayImage');
+        img.src = '';
+        img.style.display = 'none';
+        document.getElementById('imageUrlInput').value = '';
+        document.getElementById('imageFileInput').value = '';
+        currentImageUrl = '';
+        saveCurrentState();
       }
-    }
 
-    // Clear image
-    function clearImage() {
-      const img = document.getElementById('overlayImage');
-      img.src = '';
-      img.style.display = 'none';
-      document.getElementById('imageUrlInput').value = '';
-      document.getElementById('imageFileInput').value = '';
-      currentImageUrl = '';
-      saveCurrentState();
-    }
-
-    // Toggle image panel visibility
-    function toggleImagePanel() {
-      const panel = document.getElementById('imageUploadControl');
-      panel.classList.toggle('hidden');
-    }
-
-    // Reset to original fetched data
-    function resetToOriginal() {
-      if (!currentPolicyUrl) {
-        alert('Please load a policy first');
-        return;
+      // Toggle image panel visibility
+      function toggleImagePanel() {
+        const panel = document.getElementById('imageUploadControl');
+        panel.classList.toggle('hidden');
       }
-      
-      if (confirm('Reset to the original fetched data? This will discard your current edits.')) {
-        // Clear saved state
-        clearSavedState();
-        
-        // Reset font sizes
-        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
-          el.style.fontSize = originalFontSizes[el.className] || '';
-        });
-        
-        // Re-fetch from URL
-        fetchPolicyData();
+
+      // Reset to original fetched data
+      function resetToOriginal() {
+        if (!currentPolicyUrl) {
+          alert('Please load a policy first');
+          return;
+        }
+
+        if (confirm('Reset to the original fetched data? This will discard your current edits.')) {
+          // Clear saved state
+          clearSavedState();
+
+          // Reset font sizes
+          document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+            el.style.fontSize = originalFontSizes[el.className] || '';
+          });
+
+          // Re-fetch from URL
+          fetchPolicyData();
+        }
       }
-    }
-    
-    // Clear all localStorage and refresh page
-    function clearAllAndRefresh() {
-      if (confirm('Clear all saved edits for ALL policies and refresh the page?')) {
-        // Clear all localStorage items related to policies
-        const keysToRemove = [];
+
+      // Clear all localStorage and refresh page
+      function clearAllAndRefresh() {
+        if (confirm('Clear all saved edits for ALL policies and refresh the page?')) {
+          // Clear all localStorage items related to policies
+          const keysToRemove = [];
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('policy_state_')) {
+              keysToRemove.push(key);
+            }
+          }
+          keysToRemove.forEach(key => localStorage.removeItem(key));
+
+          // Refresh the page
+          location.reload();
+        }
+      }
+
+      // Save all localStorage to JSON file
+      function saveConfigToFile() {
+        const config = {};
+
+        // Iterate through all localStorage keys
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
-          if (key && key.startsWith('policy_state_')) {
-            keysToRemove.push(key);
+          if (key) {
+            config[key] = localStorage.getItem(key);
           }
         }
-        keysToRemove.forEach(key => localStorage.removeItem(key));
-        
-        // Refresh the page
-        location.reload();
+
+        // Create JSON blob
+        const jsonStr = JSON.stringify(config, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+
+        // Generate filename with timestamp
+        const timestamp = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
+        const filename = `pple-config-${timestamp}.json`;
+
+        // Create download link and trigger download
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        URL.revokeObjectURL(url);
+
+        console.log(`Config saved: ${Object.keys(config).length} keys`);
       }
-    }
 
-    // Export as PNG using html2canvas
-    async function exportAsPNG() {
-      const button = document.getElementById('exportBtn');
-      const originalContent = button.innerHTML;
+      // Load config from JSON file
+      function loadConfigFromFile() {
+        // Create hidden file input
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json,application/json';
 
-      button.disabled = true;
-      button.innerHTML = '<span class="loading"></span> Exporting...';
+        input.onchange = async (event) => {
+          const file = event.target.files[0];
+          if (!file) return;
 
-      try {
-        const poster = document.getElementById('poster');
-        const overlayImg = document.getElementById('overlayImage');
-
-        // Store current transform and temporarily remove it for export
-        const currentTransform = poster.style.transform;
-        poster.style.transform = 'none';
-
-        // Store original overlay state
-        const originalOverlayParent = overlayImg.parentElement;
-        
-        // Process overlay image if present
-        let tempCanvasContainer = null;
-        
-        if (overlayImg.style.display !== 'none' && overlayImg.src && overlayImg.src.length > 0) {
           try {
-            // Wait for image to load and check if it's valid
-            await new Promise((resolve, reject) => {
-              if (overlayImg.complete && overlayImg.naturalWidth > 0) {
-                resolve();
-              } else if (overlayImg.complete && overlayImg.naturalWidth === 0) {
-                reject(new Error('Image failed to load'));
-              } else {
-                overlayImg.onload = () => {
-                  if (overlayImg.naturalWidth > 0) {
-                    resolve();
-                  } else {
-                    reject(new Error('Image failed to load'));
-                  }
-                };
-                overlayImg.onerror = () => reject(new Error('Image failed to load'));
+            const text = await file.text();
+            const config = JSON.parse(text);
+
+            if (typeof config !== 'object' || config === null) {
+              throw new Error('Invalid config format');
+            }
+
+            // Clear existing localStorage
+            localStorage.clear();
+
+            // Apply loaded config to localStorage
+            for (const [key, value] of Object.entries(config)) {
+              localStorage.setItem(key, value);
+            }
+
+            console.log(`Config loaded: ${Object.keys(config).length} keys`);
+
+            // Refresh the page to apply changes
+            location.reload();
+          } catch (error) {
+            console.error('Error loading config:', error);
+            alert('❌ Error loading config file: ' + error.message);
+          }
+        };
+
+        // Trigger file selection dialog
+        input.click();
+      }
+
+      // Export as PNG using html2canvas
+      async function exportAsPNG() {
+        const button = document.getElementById('exportBtn');
+        const originalContent = button.innerHTML;
+
+        button.disabled = true;
+        button.innerHTML = '<span class="loading"></span> Exporting...';
+
+        try {
+          const poster = document.getElementById('poster');
+          const overlayImg = document.getElementById('overlayImage');
+
+          // Store current transform and temporarily remove it for export
+          const currentTransform = poster.style.transform;
+          poster.style.transform = 'none';
+
+          // Store original overlay state
+          const originalOverlayParent = overlayImg.parentElement;
+
+          // Process overlay image if present
+          let tempCanvasContainer = null;
+
+          if (overlayImg.style.display !== 'none' && overlayImg.src && overlayImg.src.length > 0) {
+            try {
+              // Wait for image to load and check if it's valid
+              await new Promise((resolve, reject) => {
+                if (overlayImg.complete && overlayImg.naturalWidth > 0) {
+                  resolve();
+                } else if (overlayImg.complete && overlayImg.naturalWidth === 0) {
+                  reject(new Error('Image failed to load'));
+                } else {
+                  overlayImg.onload = () => {
+                    if (overlayImg.naturalWidth > 0) {
+                      resolve();
+                    } else {
+                      reject(new Error('Image failed to load'));
+                    }
+                  };
+                  overlayImg.onerror = () => reject(new Error('Image failed to load'));
+                }
+              });
+
+              // Create a canvas with the processed overlay (grayscale, clipped, opacity, multiply)
+              const overlayCanvas = document.createElement('canvas');
+              overlayCanvas.width = 1200;
+              overlayCanvas.height = 720;
+              const octx = overlayCanvas.getContext('2d');
+
+              // First, draw the background shape to multiply with
+              const backgroundShape = poster.querySelector('.background-shape svg path');
+              if (backgroundShape) {
+                octx.fillStyle = '#A53E09'; // Match the background color
+                octx.beginPath();
+                octx.moveTo(0, 360); // 1240 - 880 = 360 (50% of 720)
+                octx.lineTo(1200, 0);
+                octx.lineTo(1200, 720);
+                octx.lineTo(0, 720);
+                octx.closePath();
+                octx.fill();
               }
-            });
-            
-            // Create a canvas with the processed overlay (grayscale, clipped, opacity, multiply)
-            const overlayCanvas = document.createElement('canvas');
-            overlayCanvas.width = 1200;
-            overlayCanvas.height = 720;
-            const octx = overlayCanvas.getContext('2d');
-            
-            // First, draw the background shape to multiply with
-            const backgroundShape = poster.querySelector('.background-shape svg path');
-            if (backgroundShape) {
-              octx.fillStyle = '#A53E09'; // Match the background color
+
+              // Apply clipping path for the overlay
               octx.beginPath();
-              octx.moveTo(0, 360); // 1240 - 880 = 360 (50% of 720)
+              octx.moveTo(0, 360); // 50% of 720
               octx.lineTo(1200, 0);
               octx.lineTo(1200, 720);
               octx.lineTo(0, 720);
               octx.closePath();
-              octx.fill();
+              octx.clip();
+
+              // Set multiply blend mode and draw overlay
+              octx.globalCompositeOperation = 'multiply';
+              octx.filter = 'grayscale(100%)';
+              octx.globalAlpha = 0.8;
+              octx.drawImage(overlayImg, 0, 0, 1200, 720);
+
+              // Create container for the processed overlay canvas
+              tempCanvasContainer = document.createElement('div');
+              tempCanvasContainer.style.cssText = 'position: absolute; top: 880px; left: 0; width: 1200px; height: 720px; pointer-events: none; z-index: 1;';
+              tempCanvasContainer.appendChild(overlayCanvas);
+
+              // Hide original overlay and insert processed version
+              originalOverlayParent.style.display = 'none';
+              poster.querySelector('.background-layer').appendChild(tempCanvasContainer);
+            } catch (imageError) {
+              console.warn('Overlay image failed to load, exporting without overlay:', imageError);
+              // Continue without overlay image
             }
-            
-            // Apply clipping path for the overlay
-            octx.beginPath();
-            octx.moveTo(0, 360); // 50% of 720
-            octx.lineTo(1200, 0);
-            octx.lineTo(1200, 720);
-            octx.lineTo(0, 720);
-            octx.closePath();
-            octx.clip();
-            
-            // Set multiply blend mode and draw overlay
-            octx.globalCompositeOperation = 'multiply';
-            octx.filter = 'grayscale(100%)';
-            octx.globalAlpha = 0.8;
-            octx.drawImage(overlayImg, 0, 0, 1200, 720);
-            
-            // Create container for the processed overlay canvas
-            tempCanvasContainer = document.createElement('div');
-            tempCanvasContainer.style.cssText = 'position: absolute; top: 880px; left: 0; width: 1200px; height: 720px; pointer-events: none; z-index: 1;';
-            tempCanvasContainer.appendChild(overlayCanvas);
-            
-            // Hide original overlay and insert processed version
-            originalOverlayParent.style.display = 'none';
-            poster.querySelector('.background-layer').appendChild(tempCanvasContainer);
-          } catch (imageError) {
-            console.warn('Overlay image failed to load, exporting without overlay:', imageError);
-            // Continue without overlay image
           }
-        }
 
-        // Temporarily disable contenteditable to avoid selection issues
-        const editableElements = poster.querySelectorAll('[contenteditable="true"]');
-        editableElements.forEach(el => {
-          el.setAttribute('contenteditable', 'false');
-          // Remove focus styles
-          el.blur();
-        });
+          // Temporarily disable contenteditable to avoid selection issues
+          const editableElements = poster.querySelectorAll('[contenteditable="true"]');
+          editableElements.forEach(el => {
+            el.setAttribute('contenteditable', 'false');
+            // Remove focus styles
+            el.blur();
+          });
 
-        // Use html2canvas to capture the poster
-        const canvas = await html2canvas(poster, {
-          backgroundColor: null,
-          scale: 2, // Higher quality
-          logging: false,
-          width: 1200,
-          height: 1600,
-          windowWidth: 1200,
-          windowHeight: 1600,
-          useCORS: true // Enable CORS for external images
-        });
+          // Use html2canvas to capture the poster
+          const canvas = await html2canvas(poster, {
+            backgroundColor: null,
+            scale: 2, // Higher quality
+            logging: false,
+            width: 1200,
+            height: 1600,
+            windowWidth: 1200,
+            windowHeight: 1600,
+            useCORS: true // Enable CORS for external images
+          });
 
-        // Restore overlay
-        if (tempCanvasContainer) {
-          tempCanvasContainer.remove();
-          originalOverlayParent.style.display = '';
-        }
-
-        // Restore transform
-        poster.style.transform = currentTransform;
-
-        // Re-enable contenteditable
-        editableElements.forEach(el => {
-          el.setAttribute('contenteditable', 'true');
-        });
-
-        // Convert canvas to blob and download
-        canvas.toBlob((blob) => {
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          
-          // Extract policy code from current URL
-          let fileName = 'pple-poster';
-          if (currentPolicyUrl) {
-            const policyCode = currentPolicyUrl.split('/').pop();
-            fileName = `pple-poster-${policyCode}`;
+          // Restore overlay
+          if (tempCanvasContainer) {
+            tempCanvasContainer.remove();
+            originalOverlayParent.style.display = '';
           }
-          
-          link.download = `${fileName}.png`;
-          link.href = url;
-          link.click();
-          URL.revokeObjectURL(url);
 
+          // Restore transform
+          poster.style.transform = currentTransform;
+
+          // Re-enable contenteditable
+          editableElements.forEach(el => {
+            el.setAttribute('contenteditable', 'true');
+          });
+
+          // Convert canvas to blob and download
+          canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+
+            // Extract policy code from current URL
+            let fileName = 'pple-poster';
+            if (currentPolicyUrl) {
+              const policyCode = currentPolicyUrl.split('/').pop();
+              fileName = `pple-poster-${policyCode}`;
+            }
+
+            link.download = `${fileName}.png`;
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+
+            button.disabled = false;
+            button.innerHTML = originalContent;
+          });
+        } catch (error) {
+          console.error('Export error:', error);
+          alert('Error exporting PNG: ' + error.message);
           button.disabled = false;
           button.innerHTML = originalContent;
-        });
-      } catch (error) {
-        console.error('Export error:', error);
-        alert('Error exporting PNG: ' + error.message);
-        button.disabled = false;
-        button.innerHTML = originalContent;
 
-        // Restore transform
-        poster.style.transform = currentTransform;
+          // Restore transform
+          poster.style.transform = currentTransform;
 
-        // Make sure to re-enable contenteditable on error
-        const editableElements = document.getElementById('poster').querySelectorAll('[contenteditable="true"]');
-        editableElements.forEach(el => {
-          el.setAttribute('contenteditable', 'true');
-        });
+          // Make sure to re-enable contenteditable on error
+          const editableElements = document.getElementById('poster').querySelectorAll('[contenteditable="true"]');
+          editableElements.forEach(el => {
+            el.setAttribute('contenteditable', 'true');
+          });
+        }
       }
-    }
-    
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      // Store original content
-      document.querySelectorAll('[contenteditable="true"]').forEach(el => {
-        originalContent[el.className] = el.innerHTML;
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', () => {
+        // Store original content
+        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+          originalContent[el.className] = el.innerHTML;
+        });
+
+        // Generate initial QR code
+        updateQRCode();
+
+        // Load policy list
+        loadPolicyList();
+
+        // Scale poster to fit
+        scalePosterToFit();
+
+        // Re-scale on window resize
+        window.addEventListener('resize', scalePosterToFit);
       });
-      
-      // Generate initial QR code
-      updateQRCode();
-      
-      // Load policy list
-      loadPolicyList();
-      
-      // Scale poster to fit
-      scalePosterToFit();
-      
-      // Re-scale on window resize
-      window.addEventListener('resize', scalePosterToFit);
-    });
-  </script>
+    </script>
 </body>
 
 </html>
